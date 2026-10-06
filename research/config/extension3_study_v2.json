@@ -1,0 +1,121 @@
+{
+  "id": "extension3-temporal-study-v2-20260919",
+  "status": "NUMERICAL_REVISION_AND_SECOND_LOCAL_PILOT_APPROVED_FULL_RUN_PENDING",
+  "parent_method": "full",
+  "parent_root": "output/feature_geometry_study_20260914",
+  "frozen_parent_scales": true,
+  "reference_weights": [
+    0.16666666666666666,
+    0.16666666666666666,
+    0.16666666666666666,
+    0.16666666666666666,
+    0.16666666666666666,
+    0.16666666666666666
+  ],
+  "missing_history": "source_mask_cell_bypass",
+  "frequency_seeds": [
+    1,
+    2,
+    3
+  ],
+  "training_first_decision": "1965-11-30",
+  "first_return_year": 1981,
+  "last_return_year": 2025,
+  "penalties_in_tie_order": [
+    0.1,
+    0.01,
+    0.001
+  ],
+  "objective_scale": "archived_parent_objective_normalizer",
+  "fixed_temporal_gain": 0.5,
+  "selection": {
+    "first_return": "2001-01-31",
+    "last_return": "2010-12-31",
+    "per_seed": true,
+    "criterion": "annual_net_utility",
+    "risk_aversion": 10.0,
+    "holdings": "continuous_candidate_own_path_from_accepted_December_1980_initialization"
+  },
+  "periods": {
+    "development": [
+      1981,
+      2000
+    ],
+    "selection": [
+      2001,
+      2010
+    ],
+    "evaluation": [
+      2011,
+      2020
+    ],
+    "exposed_robustness": [
+      2021,
+      2025
+    ]
+  },
+  "optimizer": {
+    "lower": 0.0,
+    "upper": 2.0,
+    "tolerance": 1e-05,
+    "max_steps": 100,
+    "max_evaluations": 250,
+    "max_line_searches": 16,
+    "history_size": 10,
+    "relative_ftol": 0.0,
+    "wall_seconds": 3600.0
+  },
+  "nonconvergence_policy": "retain_diagnostics_stop_before_portfolio_evaluation",
+  "pilot": {
+    "year": 1981,
+    "seed": 1,
+    "rho": 0.01,
+    "combined_wall_seconds": 3600.0,
+    "current_only_after_temporal_converges_if_budget_remains": true,
+    "output_root": "output/extension3_numerical_pilot_20260919"
+  },
+  "resources": {
+    "threads": 4,
+    "process_memory_gib": 24,
+    "basis_cache_gib": 16,
+    "minimum_free_disk_gib": 30,
+    "maximum_new_storage_gib": 10,
+    "concurrent_heavy_jobs": 1
+  },
+  "primary_contrasts": [
+    [
+      "selected_temporal",
+      "parent"
+    ],
+    [
+      "selected_temporal",
+      "fixed_temporal"
+    ],
+    [
+      "selected_temporal",
+      "selected_current_only"
+    ],
+    [
+      "selected_temporal",
+      "fixed1024"
+    ]
+  ],
+  "inference": {
+    "replicas": 10000,
+    "block_months": [
+      12,
+      24
+    ],
+    "master_seed": 20260918,
+    "alpha": 0.05,
+    "family": 4,
+    "bootstrap_refits": false
+  },
+  "claim_limits": {
+    "fresh_holdout": false,
+    "source_publication_timestamps_certified": false,
+    "originality_established": false
+  },
+  "optimizer_method": "L-BFGS-B",
+  "cache_policy": "retained_prefix_stream_overflow"
+}

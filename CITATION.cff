@@ -1,0 +1,21 @@
+cff-version: 1.2.0
+message: "Please cite the accompanying research manuscript when using this code."
+type: software
+repository-code: "https://github.com/agraolmez/portfolio-ml"
+url: "https://github.com/agraolmez/portfolio-ml"
+title: "Portfolio-ML: Learned Representations and Industry Constraints in Implementable Portfolio Choice"
+authors:
+  - family-names: "Olmez"
+    given-names: "Agra Emir"
+    affiliation: "Columbia Business School"
+version: "2026.10.06"
+date-released: "2026-10-06"
+abstract: "Research implementation and aggregate replication for adaptive representations and incremental industry constraints in implementable portfolio choice."
+preferred-citation:
+  type: unpublished
+  title: "Learned Representations and Industry Constraints in Implementable Portfolio Choice"
+  authors:
+    - family-names: "Olmez"
+      given-names: "Agra Emir"
+  year: 2026
+  notes: "Research manuscript; no journal acceptance or DOI asserted."

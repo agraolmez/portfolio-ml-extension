@@ -1,0 +1,491 @@
+\documentclass[12pt,letterpaper,fleqn]{article}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+
+\usepackage{stix2}
+\usepackage[no-math]{fontspec}
+% The exported submission PDF uses Times New Roman. The sandboxed editor
+% falls back to bundled Times-compatible glyphs when system fonts are inaccessible.
+\IfFontExistsTF{Times New Roman}{\setmainfont{Times New Roman}}{%
+\setmainfont{texgyretermes-regular.otf}[BoldFont=texgyretermes-bold.otf,
+ItalicFont=texgyretermes-italic.otf,BoldItalicFont=texgyretermes-bolditalic.otf]}
+\usepackage{placeins}
+\usepackage{amsmath,amssymb,booktabs,array,longtable}
+\usepackage{microtype,setspace}
+\usepackage{titlesec,fancyhdr}
+\usepackage[font=small,labelfont=bf,labelsep=period,justification=raggedright,singlelinecheck=false]{caption}
+\usepackage[round,authoryear]{natbib}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black]{hyperref}
+\hypersetup{pdftitle={Learned Representations and Industry Constraints in Implementable Portfolio Choice},pdfauthor={Agra Emir Olmez},pdfsubject={Historical evaluation of an extension to reconstructed Portfolio-ML}}
+\setstretch{1.0}
+\setlength{\parskip}{12pt}
+\setlength{\parindent}{0.5in}
+\setlength{\mathindent}{0.5in}
+\setlength{\emergencystretch}{2em}
+\clubpenalty=10000
+\widowpenalty=10000
+\displaywidowpenalty=10000
+\brokenpenalty=10000
+\raggedbottom
+\renewcommand{\arraystretch}{1.12}
+\titleformat{\section}{\normalfont\normalsize\bfseries}{\thesection}{0.7em}{\MakeUppercase}
+\titleformat{\subsection}{\normalfont\normalsize\bfseries}{\thesubsection}{0.7em}{}
+\titlespacing*{\section}{0pt}{2.1ex plus 0.5ex minus 0.2ex}{0.9ex}
+\titlespacing*{\subsection}{0.5in}{1.6ex plus 0.4ex minus 0.2ex}{0.5ex}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{}
+\fancyhead[R]{}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\setlength{\textfloatsep}{18pt plus 3pt minus 2pt}
+\setlength{\floatsep}{14pt plus 2pt minus 2pt}
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\bottomfraction}{0.75}
+\renewcommand{\textfraction}{0.12}
+\newcounter{exhibit}
+\makeatletter
+\let\c@table\c@exhibit
+\let\c@figure\c@exhibit
+\renewcommand{\thetable}{\arabic{exhibit}}
+\renewcommand{\thefigure}{\arabic{exhibit}}
+\renewcommand{\tablename}{Exhibit}
+\renewcommand{\figurename}{Exhibit}
+\setlength{\@fptop}{0pt}
+\makeatother
+\newcommand{\papertitle}{Learned Representations and Industry Constraints in Implementable Portfolio Choice}
+\newcommand{\paperdate}{October 5, 2026}
+\newcommand{\printtitle}{\begingroup\setlength{\parindent}{0pt}\raggedright
+{\fontsize{18}{22}\selectfont\bfseries\papertitle\par}\endgroup}
+\renewenvironment{abstract}{\begingroup\setlength{\parindent}{0pt}\noindent\textbf{Abstract}\par}{\par\endgroup}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\argmax}{\operatorname*{arg\,max}}
+\newcommand{\argmin}{\operatorname*{arg\,min}}
+\newcommand{\tabnote}[1]{\par\vspace{4pt}{\setlength{\parskip}{0pt}\footnotesize\setstretch{1.03}\raggedright\noindent #1\par}}
+\begin{document}
+\printtitle
+\noindent\paperdate\par
+
+% AUTHOR CONTACT START
+\vspace{18pt}
+\noindent\textbf{Agra Emir Olmez}\\
+MS in Financial Economics student\\
+Columbia Business School\\
+Henry R. Kravis Hall, 665 West 130th Street\\
+New York, NY 10027, USA\\
+\href{mailto:aolmez28@gsb.columbia.edu}{aolmez28@gsb.columbia.edu}
+
+\noindent Agra Emir Olmez is an MS in Financial Economics student at Columbia Business School in New York, NY, USA.
+
+\noindent\textbf{Corresponding author:} Agra Emir Olmez.
+% AUTHOR CONTACT END
+\clearpage
+\printtitle
+\noindent\paperdate\par
+\begin{abstract}
+Can adapting stock characteristics improve a portfolio learner after accounting for risk and trading costs? We extend Portfolio-ML with learned characteristic scales, temporal transformations, valuation-dependent coefficients, and a constraint on incremental industry exposure. The baseline reconstruction and combined procedure share the covariance model, trading rule, and cost calibration. Annual fitting and selection use preceding outcomes. Over 1981--2020, annual utility rises from 6.092\% to 7.184\%, a gain of 1.093 percentage points at risk aversion ten. The gain is statistically significant at 1\% under the released-code one-sided, unadjusted normal test ($p=0.001865$). Over the nonoverlapping 2021--2025 extension, the gain is 2.180 percentage points, statistically significant at 5\% under the same test ($p=0.044492$). Higher net returns compensate for higher risk and modeled impact costs. Earlier controlled component studies inform interpretation, while the final comparison evaluates the combined procedure. The findings provide historical evidence for investment managers evaluating adaptive portfolio representations and incremental exposure within a common economic objective.
+\end{abstract}
+\noindent\textbf{Keywords:} portfolio choice; machine learning; transaction costs; random features; industry constraints.
+
+\noindent\textbf{JEL classification:} G11, C58, C45.
+
+\section*{Key takeaways}
+\begin{itemize}
+\setlength{\itemsep}{0pt}\setlength{\parskip}{0pt}
+\item Adaptive characteristic representations and an incremental industry constraint raise historical annual utility by 1.093 percentage points relative to reconstructed Portfolio-ML over 1981--2020.
+\item The industry projection improves utility while reducing volatility and modeled impact cost relative to the unprojected combined model in the primary period.
+\item Annual refitting preserves continuous portfolio holdings; the nonoverlapping 2021--2025 extension delivers a further positive utility comparison under the same implementation conventions.
+\end{itemize}
+\clearpage
+% INTRODUCTION START (journal style omits an Introduction heading)
+Investment managers need to know whether richer machine-learning models improve portfolios after risk and trading costs. \citet{jensen2026} address this through Portfolio-ML, which learns portfolio weights from an economic objective and trades gradually toward a target. We examine adaptive characteristic representations and incremental industry exposure control within that framework.
+
+The extension combines three choices. Positive characteristic scales change how inputs enter fixed nonlinear features. Theme-specific temporal gains smooth or emphasize movements relative to recent characteristic history. Valuation-dispersion interactions let feature coefficients respond to cross-sectional valuation gaps. The transformations are trained sequentially using the portfolio objective. A final projection removes additional net industry exposure from the extended target relative to the baseline, retaining stock-level variation within those restrictions.
+
+Over 1981--2020, annual utility rises from 6.092\% for the reconstructed baseline to 7.184\% for the combined strategy, a gain of 1.093 percentage points. The improvement is statistically significant at 1\% under the original released-code one-sided, unadjusted normal test ($p=0.001865$). Higher mean return more than compensates for higher risk and modeled impact cost. The comparison holds risk aversion at ten and uses a common wealth path anchored at USD~10 billion in December 2020.
+
+Annual refitting and expanding-history selection use preceding outcomes, while actual holdings remain continuous over 1981--2025. In the nonoverlapping 2021--2025 extension, the utility gain is 2.180 percentage points and is statistically significant at 5\% under the same one-sided, unadjusted test. This later period was previously examined during specification development and provides additional historical evidence for the procedure.
+
+The contribution is a reproducible combination of representation learning and exposure control within direct portfolio choice. Shared covariance, impact and trading machinery let investment managers assess the combined procedure's return--risk--cost trade-off on common reconstructed inputs.
+
+The following sections present the methods, evaluation and investment implications. Supplemental Material provides implementation details, the projection derivation, controlled component studies and retrospective dependence sensitivities.
+
+
+
+\section{Related literature}
+Our starting point is \citet{jensen2026}, who integrate flexible learning with portfolio choice under trading costs. We preserve their economic moment estimation and dynamic adjustment structure while changing the inputs to the learned target and restricting its incremental industry exposure. This connects to the broader direct-policy approach of \citet{brandt2009}, in which portfolio weights are parameterized by asset characteristics, and to dynamic trading with predictable returns and transaction costs in \citet{garleanu2013}. These connections motivate learning portfolio policies within an explicit risk and trading-cost objective.
+
+The nonlinear dictionary uses the random-feature approach of \citet{rahimi2007}. Learning a diagonal scale before a fixed random map changes the induced representation without learning every mixing direction. Recent work on learned portfolio feature geometry, including \citet{fan2026}, is close in motivation. Our specification studies bounded diagonal scaling within Portfolio-ML. The characteristic inputs are drawn from the data infrastructure of \citet{jensen2023}, with reconstruction conventions described in Section~\ref{sec:data}.
+
+The temporal and state-dependent layers allow information to matter differently over time. We use low-dimensional restrictions: thirteen theme gains for temporal deviations and one scalar state interacting with the nonlinear feature coefficients. Their rationale is to expose a small set of economically interpretable choices to the portfolio objective. Cost interactions across characteristic portfolios are already central to \citet{demiguel2020}. Exposure restrictions and transaction-cost-aware optimization also have an established literature, including \citet{lobo2007}. Our industry projection applies a constrained quadratic adjustment to the incremental target.
+
+Finally, inference after financial model development requires care. \citet{white2000} studies data snooping, \citet{harvey2016} emphasize multiple testing in financial discoveries, and \citet{bailey2017} study selection and overfitting in backtests. The final comparison follows the released Portfolio-ML reporting convention. Earlier development studies used paired stationary-bootstrap comparisons following the resampling principle of \citet{politis1994}; Supplemental Appendix~D reports their results and definitions.
+
+\section{Data and baseline reconstruction}\label{sec:data}
+\subsection{Sources, universe, and historical coverage}
+The reconstruction uses the released Portfolio-ML characteristic dictionary and current source data, with US common stocks listed on the New York Stock Exchange. The parent characteristic capture contains 1,266,940 stock-month observations from December 1952 through December 2025. After the accepted feature preparation, 1,138,263 rows have complete ranked or imputed inputs and operational fields. The full-history eligibility record contains 503,362 stock-month observations for 2,696 securities. These counts describe data preparation over the broader source history; they are not the cross-sectional size of the 1981--2020 evaluation sample. The available source vintage does not provide a complete record of historical publication and revision timestamps.
+
+The characteristic set contains 115 variables. A stock-month must have at least 57 observed characteristics before rank imputation. The released procedure uses monthly empirical ranks, preserves exact source zeros at rank zero, and assigns missing characteristic ranks a value of 0.5. Rank construction precedes some final eligibility screens. Other screens retain the source's exchange and security-type requirements, positive dollar volume, industry identification, history requirements, and size rule. The universe is generally the larger half of qualifying stocks, subject to an inherited minimum-size fallback of fifty securities and entry/deletion rules. It is neither an S\&P~500 constituent panel nor a portfolio of today's surviving firms.
+
+The source preparation builds up to twelve future monthly excess-return leads, removes rows for which all twelve leads are missing, and fills individually missing leads with zero. It records 483,002 imputed cells across the full lead matrix; only four are next-month returns on eligible rows. Thus future-return availability affects eligibility, and zero imputation is part of the inherited return convention. Both strategies use this common historical universe. The effect of eligibility selection on their relative performance has not been separately estimated.
+
+The risk reconstruction uses 17,960,847 daily observations in seventy-four yearly partitions. Missing daily returns are retained as missing and excluded from the corresponding regressions. The reconstructed calendar first supports covariance construction in November 1964; its first fitting decision is November 1965. Evaluated portfolio returns start in January 1981. Raw data history, covariance history, fitting history, validation history, and evaluation dates must therefore be distinguished.
+
+\subsection{Returns, holdings, and wealth accounting}
+The accepted outcome series adapts the original return conventions to the available CRSP CIZ data. Certain event amounts already included in source returns are counted once, and total-return reconstruction uses the outcome month's bill reference. The original source-convention outcome series remains separately archived. The reconstruction uses the available vendor vintage; upstream return-derived characteristics retain that vintage.
+
+All compared methods use the same exogenous wealth path. Backward compounding from December 2020 applies
+\begin{equation}\label{eq:wealth}
+ V_{t-1}=\frac{V_t}{1+R^{M}_t},\qquad V_{\mathrm{Dec\,2020}}=\$10\text{ billion}
+\end{equation}
+where $R^{M}_t$ is the accepted market total return for the intervening month. The pinned released code instead multiplies backward by $1-R^{M}_t$. Equation~\eqref{eq:wealth} is the disclosed reconstruction correction needed for reciprocal consistency with forward growth. We retain the original source unchanged and apply the correction to both baseline and extension. B1 therefore denotes our common-input reconstruction, incorporating the documented wealth correction, data vintage, and return conventions.
+
+Continuing positions inherit their return-adjusted weights, and new entrants begin with zero inherited holdings. A disappearing identifier is omitted from the next active weight vector without a separate liquidation-trade cost entry, following the retained source convention. The preparation records 2,625 exits before the final data boundary. Exit-liquidation costs, settlement adjustments, and residual claims are outside this convention.
+
+\subsection{Risk and price impact}
+The covariance model combines twelve industry indicators and thirteen characteristic themes with security-specific residual variance. Daily cross-sectional regressions estimate factor returns, and the source's exponentially weighted factor covariance and residual-variance rules produce monthly covariance matrices $\Sigma_t$. The daily-to-monthly variance conversion multiplies by twenty-one. Portfolio feature normalization uses the square root of covariance diagonals, including the source's fallback convention, rather than a raw realized-volatility characteristic.
+
+Let $\Lambda_t$ denote the diagonal price-impact matrix. The retained calibration sets its $i$th diagonal element to $0.2$ divided by the stock's estimated daily dollar volume. If $q_t$ is a trade in portfolio-weight units and $V_t$ is wealth in dollars, modeled cost as a fraction of wealth is
+\begin{equation}\label{eq:cost}
+ \operatorname{TC}_{t+1}=\frac{V_t}{2}q_t'\Lambda_tq_t
+\end{equation}
+Performance observations index this cost by the subsequent realized return month. The calibration and units are common to all methods. The evaluated cost measure covers quadratic market impact; borrowing, financing, taxes, and exit-liquidation charges are not included.
+
+\section{Portfolio construction}\label{sec:method}
+\subsection{The reconstructed Portfolio-ML baseline}
+Let $x_{it}\in\R^{115}$ be the ranked characteristic vector of security $i$ at decision date $t$. For a selected bandwidth and random seed, a fixed matrix $W$ maps characteristics into random linear mixtures. Paired cosine and sine transformations form the nonlinear dictionary. With 256 mixtures there are 512 nonconstant columns; a constant adds one further column. Each nonlinear column is centered and normalized cross-sectionally, and the source normalization scales exposures using estimated security volatility. Write the resulting matrix as $B_t$.
+
+For output coefficients $\beta$, the portfolio aim is
+\begin{equation}\label{eq:aim}
+ a_t=B_t\beta
+\end{equation}
+This aim is a vector of portfolio weights, not a return-probability forecast. It is not constrained to be long-only or to sum to one. The trading rule moves from inherited holdings $h_t$ toward the aim:
+\begin{equation}\label{eq:trade}
+ w_t=M_th_t+(I-M_t)a_t,\qquad q_t=w_t-h_t
+\end{equation}
+The matrix $M_t$ is determined by the original risk, wealth, and impact machinery. It is neither a fixed scalar smoothing parameter nor a learned characteristic weight. The implementation preserves the released ten-step matrix calculation and its associated numerical checks.
+
+The fitting procedure uses finite-history portfolio and trade operators, denoted $\Omega_t$ and $\Delta\Omega_t$. They map coefficients into the historical portfolio and trade representation used to construct the economic moments. In particular,
+\begin{align}
+ b_t&=\Omega_t'r^e_{t+1}\\
+ A_t&=\gamma\Omega_t'\Sigma_t\Omega_t
+       +V_t\Delta\Omega_t'\Lambda_t\Delta\Omega_t\label{eq:moment}
+\end{align}
+where $r^e_{t+1}$ is the vector of subsequent excess returns and $\gamma=10$. The fitted coefficients solve
+\begin{equation}\label{eq:beta}
+ \widehat\beta=\argmax_\beta
+ \left\{\bar b'\beta-\frac12\beta'\bar A\beta
+                         -\frac12\beta'R\beta\right\}
+       =(\bar A+R)^{-1}\bar b
+\end{equation}
+For the baseline, $R=\lambda I$, including the constant. Bars denote equal averages over eligible fitting months. The finite-history fitting operator uses the source's twelve-term approximation and normalization. It does not reset actual holdings every twelve months: the executed recursion in equation~\eqref{eq:trade} continues through months, annual refits, and changes in the active universe.
+
+\subsection{Learned characteristic scales: E2}
+E2 replaces the identity scaling before random mixing with a positive diagonal transformation. For mixture $k$,
+\begin{equation}\label{eq:scale}
+ u_{itk}=\sum_{j=1}^{115}W_{jk}\exp(\theta_j)x_{itj},\quad
+ \sum_{j=1}^{115}\theta_j=0,\quad |\theta_j|\leq\log 2
+\end{equation}
+The 115 scales have 114 independent degrees of freedom, lie between $1/2$ and $2$, and have geometric mean one. These restrictions keep a common scale from being confounded with the random-feature bandwidth. Each characteristic's scale is shared across all random mixtures; $W$ itself is not learned.
+
+The learner profiles out $\beta$ by solving equation~\eqref{eq:beta} at every candidate scale vector and optimizes the economic objective with a quadratic log-scale penalty. The relative scale-penalty setting is 0.01. Constrained gradient updates use backtracking and stop after at most eight accepted updates under the fixed computational budget. The learned scales determine how characteristics enter the nonlinear portfolio representation under this computational budget.
+
+\subsection{Temporal transformations: E3}
+For each security and characteristic, define a strictly lagged six-calendar-month mean,
+\begin{equation}\label{eq:temporal}
+ \mu_{itj}=\frac16\sum_{\ell=1}^{6}x_{i,t-\ell,j},\qquad
+ \widetilde x_{itj}=\mu_{itj}+g_{h(j)}(x_{itj}-\mu_{itj}),\quad
+             0\leq g_{h(j)}\leq2
+\end{equation}
+The index $h(j)$ assigns a characteristic to one of thirteen existing themes. A gain below one smooths the current deviation, a gain above one amplifies it, and a gain of one leaves the input unchanged. The inputs remain 115 separate characteristics; they are not replaced by thirteen theme averages. If the current or required historical source observation is missing, the adjustment is bypassed. The transformed input is neither reranked nor clipped to the original rank interval.
+
+The temporal transform precedes E2 scaling and random mixing. Annual E2 scales are frozen while E3 learns the thirteen gains, and output coefficients are re-solved for each candidate. A quadratic penalty on the mean squared distance of gains from one shrinks toward the E2 representation. The final annual implementation uses L-BFGS-B and explicit convergence gates. It holds the factor-risk model and trading rule fixed: transforming a predictor's temporal behavior does not transform the exposures used to estimate $\Sigma_t$.
+
+\subsection{Valuation-state-dependent coefficients: E4}
+Let $d_t^{BM}$ be the difference between the 90th and 10th percentiles of valid positive raw book-to-market ratios in the eligible parent universe. This cross-sectional dispersion is not the aggregate market book-to-market ratio. Computing it requires at least one hundred observations and coverage of at least seventy percent of eligible securities. Normalize it against the preceding 120 calendar months, excluding the current month, with at least sixty finite historical observations:
+\begin{equation}\label{eq:state}
+ c_t=\operatorname{clip}_{[-3,3]}
+ \left(\frac{d_t^{BM}-\bar d^{BM}_{t-120:t-1}}
+ {s^{BM}_{t-120:t-1}}\right)
+\end{equation}
+The denominator uses the historical population standard deviation. An unavailable state is inactive at zero with a recorded reason. The accounting input follows a documented four-month lag and maximum age of eighteen months. Actual publication timestamps and revision vintages are unavailable for a full row-level information-availability audit.
+
+Given the frozen E2--E3 representation, E4 jointly fits base and conditional output coefficients:
+\begin{equation}\label{eq:conditional}
+ a_{it}=\beta_0B_{it0}
+        +\sum_{k=1}^{P}(\beta_k+\delta_kc_t)B_{itk}
+\end{equation}
+The constant has no state interaction, and conditional columns are not normalized again. With $P=512$, there are 513 base and 512 conditional coefficients. Each historical operator slice uses its own dated state. A block-ridge version of equation~\eqref{eq:beta} penalizes the base coefficients with $\lambda$ and the conditional coefficients with $m\lambda$. The multiplier $m$ is selected from a fixed grid; if $\lambda=0$, both penalties are zero.
+
+This model allows the same market state to increase some feature coefficients and decrease others. It does not impose a common leverage adjustment. Nor does setting today's state to zero recover the separately fitted E3 portfolio, because E4 re-estimates the base coefficients jointly with the interactions. Neutral equivalence is tested with an explicit disabled model.
+
+\subsection{Industry projection of the incremental aim: IND}\label{sec:ind}
+Let $a_t^B$ denote the B1 aim, $a_t^C$ the E4 aim, and $d_t=a_t^C-a_t^B$ their difference. Let $H_t$ contain the twelve industry indicator columns and set $Q_t=\gamma\Sigma_t+V_t\Lambda_t$. The final strategy solves
+\begin{equation}\label{eq:projectproblem}
+ z_t=\argmin_v(v-d_t)'Q_t(v-d_t)
+             \quad\text{subject to}\quad H_t'v=0
+\end{equation}
+With $Q_t$ positive definite and $H_t$ of full column rank, the unique solution is
+\begin{equation}\label{eq:projection}
+ z_t=d_t-Q_t^{-1}H_t(H_t'Q_t^{-1}H_t)^{-1}H_t'd_t,
+ \qquad a_t^{IND}=a_t^B+z_t
+\end{equation}
+Supplemental Appendix~B provides the derivation and clarifies its scope. The adjustment removes additional net industry exposure from the aim relative to B1 while remaining close to the C4 increment in the risk-and-impact metric. It preserves the baseline aim's industry allocation. It does not constrain gross sector exposure, leverage, individual-stock concentration, or the industry exposure of executed holdings. Those holdings still depend on $M_t$ and inherited positions. IND introduces no additional fitted strength parameter.
+
+Exhibit~\ref{tab:models} summarizes which objects each layer estimates or restricts. Exhibit~\ref{fig:pipeline} traces how these layers form the target and enter the common trading rule.
+
+\begin{table}[!htbp]
+\centering\small
+\caption{Model components and their roles}\label{tab:models}
+\begin{tabular}{@{}>{\raggedright\arraybackslash}p{0.12\linewidth}>{\raggedright\arraybackslash}p{0.40\linewidth}>{\raggedright\arraybackslash}p{0.40\linewidth}@{}}
+\toprule Component & Estimated or imposed object & Held fixed or scope restriction\\\midrule
+B1 & Output coefficients; annual bandwidth, width, and ridge choice & Released random map, risk model, and trading rule at a given coordinate\\
+E2 & 115 positive scales, 114 independent log-scale parameters & Random mixing directions; scales in $[0.5,2]$; eight-update budget\\
+E3 & Thirteen theme gains on six-month deviations & E2 scales; risk machinery; gains in $[0,2]$\\
+E4 / C4 & Base coefficients plus state-feature interactions & E2--E3 representation; one valuation-dispersion state\\
+IND & Fixed projection of C4-minus-B1 aim & No tuned strength; incremental net industry neutrality only\\\bottomrule
+\end{tabular}
+\tabnote{C4 denotes the combined E2, E3, and E4 model. IND denotes C4 followed by the industry projection relative to B1. The earlier confidence-based E1 is excluded. At the principal evaluated width, B1 has 513 output coefficients and C4 has 1,025.}
+\end{table}
+
+\begin{figure}[!htbp]
+\centering
+\begin{tikzpicture}[font=\small,node distance=5mm,box/.style={draw=black!65,rounded corners=2pt,text width=10.9cm,align=center,inner sep=6pt},arr/.style={-{Stealth[length=2mm]},thick}]
+\node[box] (x) {115 monthly ranked characteristics and their lagged histories};
+\node[box,below=of x] (g) {E3 temporal gains $\longrightarrow$ frozen E2 scales $\longrightarrow$ fixed random mixtures};
+\node[box,below=of g] (f) {Sine/cosine features $\longrightarrow$ source normalization $\longrightarrow$ E4 state interactions};
+\node[box,below=of f] (a) {Apply annually fitted coefficients $\longrightarrow$ C4 aim};
+\node[box,below=of a] (p) {C4-minus-B1 aim $\longrightarrow$ industry projection $\longrightarrow$ add B1 aim};
+\node[box,below=of p] (w) {Original matrix trading rule and inherited holdings $\longrightarrow$ returns and impact cost};
+\foreach \aa/\bb in {x/g,g/f,f/a,a/p,p/w}\draw[arr] (\aa)--(\bb);
+\end{tikzpicture}
+\caption{The final portfolio pipeline. The diagram shows evaluation-time transformations. Estimation proceeds sequentially: E2 scales are fitted before E3 gains, and both are frozen before the E4 coefficient fit. B1 supplies a separately fitted reference aim. The risk and trading machinery is shared across methods.}\label{fig:pipeline}
+\end{figure}
+
+\FloatBarrier
+\section{Annual estimation, selection, and inference}\label{sec:design}
+\subsection{An expanding-history staged procedure}
+The final experiment fixes author seed one. Baseline tuning retains the full released grid of 808 candidates: two bandwidths, four nonlinear feature widths, and 101 ridge values. At each annual baseline-selected coordinate, the procedure fits E2 once, then fits E3 at temporal restraints $\rho\in\{0.1,0.01,0.001\}$ and E4 at conditional ridge multipliers $m\in\{100,10,1\}$. This gives nine E3--E4 pairs. For an exact tie the stated preference is stronger temporal restraint and then stronger conditional restraint. IND is a fixed downstream operation, not an additional model selected from a strength grid.
+
+For every evaluation year from 1981 through 2025, the combined model uses year-specific E2 scales, E3 temporal gains, and E4 coefficients, fitted sequentially on expanding history through the preceding December. The learned parameters are updated annually; the fixed IND projection is recalculated at each monthly portfolio decision. Previously computed annual fits are reused only when their training cutoffs, settings, and source lineage match the required annual specification.
+
+This is a staged search. It first selects the baseline coordinate and then tunes the added layers conditionally. It does not optimize the full Cartesian product of every baseline and extension setting. The distinction matters: the measured performance belongs to this implementable search procedure, rather than to an oracle that retrospectively chooses among all representations. Saved early validation parents in 1974 and 1975 use sixty-four nonlinear features; the principal evaluated representation uses 512. Reproduction reads the recorded annual width instead of imposing a constant width on all historical fitting years.
+
+For deployment in calendar year $Y$, coefficient fitting uses outcomes that have matured by the preceding December cutoff. Selection uses expanding candidate validation outcomes from 1971 through $Y-1$. A baseline-only 1966--1970 validation initializes the 1971 parent without using later outcomes. The nine-pair validation score is the unprojected C4 economic moment objective, excluding fitting penalties; IND is applied afterward without separate tuning. It is not the ex-post gross-variance utility calculated from separately executed portfolio paths.
+
+Exhibit~\ref{tab:chronology} distinguishes the source, fitting, validation, and evaluation windows. The deployment rule keeps the outcome cutoff before each evaluated year.
+
+\begin{table}[!htbp]
+\centering\small
+\caption{Chronology and evaluation windows}\label{tab:chronology}
+\begin{tabular}{@{}p{0.30\linewidth}p{0.61\linewidth}@{}}
+\toprule Stage & Timing and interpretation\\\midrule
+Raw characteristic history & December 1952--December 2025\\
+First fitting decision & November 1965 after the risk/history construction\\
+Initial parent validation & 1966--1970; initializes the 1971 baseline coordinate\\
+Annual candidate banks & 1971--2025, fitted using preceding matured outcomes\\
+Selection for year $Y$ & Expanding validation through December of $Y-1$\\
+Primary evaluation & January 1981--December 2020; 480 monthly returns\\
+Nonoverlapping extension & January 2021--December 2025; 60 returns; historically exposed\\\bottomrule
+\end{tabular}
+\tabnote{The extension covers January 2021 through December 2025. Annual fitting continues after 2020; the model is not frozen at its December 2020 estimate. Earlier evaluation outcomes can enter subsequent annual training and selection.}
+\end{table}
+
+The completed run contains fifty-five annual candidate banks, 385 saved E2/E3/C4 model bundles, 5,940 candidate validation observations, forty-five deployment selections, and 540 months for each of B1, C4, and IND. All three actual paths start from the same value-weighted eligible inherited holdings in December 1980. The first rebalance is charged, and no extra terminal liquidation is added. Portfolio paths remain continuous over 1981--2025. The 2021 estimate uses available outcomes through December 2020, and the 2025 estimate uses outcomes through December 2024. This chronology establishes past-only fitting and tuning conditional on the prepared inputs; it does not resolve the source-timing limitations in Section~\ref{sec:data} or the broader historical development of the specification.
+
+\subsection{Reported performance and the released-code test}\label{sec:inference}
+Let $r^g_t$ be monthly gross portfolio excess return and $r^n_t=r^g_t-\operatorname{TC}_t$ monthly net excess return. Following the final adopted released-code reporting convention, annual utility is
+\begin{equation}\label{eq:utility}
+ U=12\left[\bar r^n-\frac{\gamma}{2}s_g^2\right],\qquad
+ s_g^2=\frac{1}{N-1}\sum_{t=1}^{N}(r^g_t-\bar r^g)^2,\quad\gamma=10
+\end{equation}
+It is a mean--variance utility statistic after modeled impact cost, not an annual return or compounded growth rate. Annualized return and cost means multiply monthly arithmetic means by twelve. The reported net volatility is $\sqrt{12}\,s_n$, and the reported net-return Sharpe ratio is $\sqrt{12}\,\bar r^n/s_n$, where $s_n$ is the sample standard deviation of net excess returns. This Sharpe denominator differs from the gross-return denominator used for the corresponding column in the authors' released summary code.
+
+The final significance comparison is IND versus B1. For each strategy $k$, compute its gross-return mean separately within the reported evaluation window and define its released-code monthly flow and the paired difference:
+\begin{equation}\label{eq:flow}
+ f_{kt}=r^n_{kt}-5(r^g_{kt}-\bar r^g_k)^2,\qquad
+ D_t=f_{IND,t}-f_{B1,t}
+\end{equation}
+The one-sided test evaluates $H_0:\E[D_t]\leq0$ against $H_1:\E[D_t]>0$. The test statistic and normal $p$-value are
+\begin{equation}\label{eq:test}
+ z=\frac{\bar D}{s_D/\sqrt N},\qquad p=1-\Phi(z)
+\end{equation}
+The code reports the normal score $\Phi(z)=1-p$. Equations~\eqref{eq:utility} and \eqref{eq:flow} have a small finite-sample distinction: utility uses sample variance with denominator $N-1$, while the mean of centered squared flows uses denominator $N$. Supplemental Appendix~C gives the exact relation. We retain the released conventions for both statistics.
+
+Primary inference uses nominal one-sided $p$-values under this released-code convention, without serial-dependence or specification-search adjustments. The reporting method was recorded after earlier results had been inspected and before the final run. C4 serves as a descriptive control. Supplemental Appendix~E reports retrospective dependence sensitivities on the saved portfolio paths. Those checks remain conditional on the fitted procedure and do not correct for the complete specification search.
+
+\FloatBarrier
+\section{Results}\label{sec:results}
+\subsection{The primary historical comparison}
+Exhibit~\ref{tab:performance} reports the verified saved-path statistics. Over 1981--2020, IND delivers annual utility of 7.184\%, compared with 6.092\% for B1 and 6.479\% for C4. The IND--B1 difference is 1.093 percentage points per year. Exhibit~\ref{tab:inference} reports the paired tests. The primary released-code statistic is $z=2.900136$, with $p=0.001865$. The improvement is statistically significant at both the five-percent and one-percent levels under this one-sided, unadjusted normal test.
+
+A retrospective Bonferroni sensitivity covering five historical incremental comparisons and the final baseline comparison yields $6p=0.01119$ for the final contrast. These six comparisons are a subset of the development record, not the complete specification-search family. The calculation neither controls error across that broader search nor corrects serial dependence. Supplemental Appendix~D identifies the subset and the earlier component controls.
+
+The mean-return, risk, and cost comparison identifies the arithmetic sources of the utility gain. IND's annualized gross excess mean is 11.196\%, versus 9.129\% for B1. Modeled impact cost rises from 0.247\% to 0.363\% per year, leaving a net mean increase of 1.951 percentage points. Annualized net-return volatility is also higher for IND, at 8.546\% versus 7.473\%. Net-return Sharpe rises from 1.189 to 1.268. The utility gain is therefore associated with higher mean excess return that more than compensates for additional modeled impact expense and the gross-return variance penalty.
+
+An exact arithmetic decomposition of equation~\eqref{eq:utility} gives a gross-mean contribution of $+2.067$ percentage points, an impact-cost contribution of $-0.116$ percentage points, and a gross-variance-penalty contribution of $-0.858$ percentage points. Their sum is the $+1.093$ percentage-point utility difference. This decomposition identifies the return, impact-cost, and risk-penalty contributions to the measured utility gain.
+
+\begin{table}[!htbp]
+\centering\small
+\caption{Annualized portfolio performance}\label{tab:performance}
+\begin{tabular}{@{}lrrrrrr@{}}
+\toprule & Utility & Gross mean & Net mean & Net vol. & Net Sharpe & Impact\\
+ & (\%) & (\%) & (\%) & (\%) & & (\%)\\\midrule
+\multicolumn{7}{@{}l}{\textit{Panel A: 1981--2020, 480 months}}\\[3pt]
+B1 & 6.092 & 9.129 & 8.882 & 7.473 & 1.189 & 0.247\\
+C4 & 6.479 & 11.605 & 11.208 & 9.730 & 1.152 & 0.397\\
+IND & 7.184 & 11.196 & 10.833 & 8.546 & 1.268 & 0.363\\[7pt]
+\multicolumn{7}{@{}l}{\textit{Panel B: 2021--2025, 60 months; excludes Panel A}}\\[3pt]
+B1 & 4.832 & 7.599 & 7.431 & 7.208 & 1.031 & 0.169\\
+C4 & 5.810 & 9.738 & 9.362 & 8.432 & 1.110 & 0.376\\
+IND & 7.012 & 10.448 & 10.107 & 7.869 & 1.284 & 0.341\\\bottomrule
+\end{tabular}
+\tabnote{Source: sealed monthly paths and independently reconciled paper tables. B1 is reconstructed Portfolio-ML; C4 includes E2--E4; IND adds the fixed incremental-industry projection. All results use seed one. Means and impact costs are arithmetic monthly means multiplied by twelve, not CAGR. Volatility uses net-return sample standard deviation times $\sqrt{12}$; Sharpe uses the same net-return denominator. Utility is $12[\bar r^n-5s_g^2]$ with gross-return sample variance. Impact is a positive cost deducted from gross excess return. Differences can be affected by display rounding. Panels A and B have nonoverlapping return dates.}
+\vspace{1.5em}
+\caption{IND versus B1 utility comparisons}\label{tab:inference}
+\begin{tabular}{@{}lrrrr@{}}
+\toprule Return period & $N$ & $\Delta U$ (pp/year) & $z$ & One-sided $p$\\\midrule
+1981--2020 & 480 & 1.093 & 2.900136 & 0.001865\\
+2021--2025 & 60 & 2.180 & 1.700784 & 0.044492\\\bottomrule
+\end{tabular}
+\tabnote{The normal test follows equations~\eqref{eq:flow}--\eqref{eq:test}. The $p$-values in this table are unadjusted for multiple testing and broader historical specification search, with no serial-dependence correction. The displayed $\Delta U$ uses equation~\eqref{eq:utility} and is not exactly $12\bar D$ because of the $N$ versus $N-1$ convention. The extension uses sixty nonoverlapping monthly returns.}
+\end{table}
+
+\FloatBarrier
+\subsection{The industry restriction and the 2021--2025 extension}
+Relative to C4 in the primary period, IND gives up 0.409 percentage points of gross mean excess return while lowering annualized net volatility from 9.730\% to 8.546\% and modeled impact cost from 0.397\% to 0.363\%. Its annual utility is 0.706 percentage points higher. This is consistent with the possibility that the constraint removes comparatively unattractive incremental industry allocations within this construction. This descriptive comparison illustrates the role of the projection in the combined procedure.
+
+In the nonoverlapping 2021--2025 extension, IND annual utility is 7.012\%, compared with 4.832\% for B1. The 2.180 percentage-point improvement is statistically significant at 5\% under the same one-sided, unadjusted normal test ($p=0.044492$). The extension comprises sixty monthly returns, from January 2021 through December 2025. Exhibit~\ref{fig:utilities} compares the three models in the primary period and this extension.
+
+Annual refitting and expanding-history selection continue through the extension using preceding outcomes, while portfolio holdings remain continuous. The extension evaluates the same procedure over a further sixty monthly returns.
+
+\begin{figure}[!htbp]
+\centering
+\begin{tikzpicture}
+\begin{axis}[width=0.97\linewidth,height=6.6cm,ybar,bar width=28pt,ymin=0,ymax=8.4,
+ ylabel={Annual utility (\%)},symbolic x coords={1981--2020,2021--2025},xtick=data,
+ ytick={0,2,4,6,8},axis x line*=bottom,axis y line*=left,ymajorgrids=true,grid style={gray!20},
+ legend style={at={(0.5,1.03)},anchor=south,legend columns=3,draw=none,column sep=6pt,font=\small},
+ legend image code/.code={\draw[#1] (0cm,-0.1cm) rectangle (0.28cm,0.1cm);},
+ enlarge x limits=0.22,tick label style={font=\small},label style={font=\small},
+ nodes near coords,nodes near coords style={font=\footnotesize},point meta=y,
+ every node near coord/.append style={/pgf/number format/fixed,/pgf/number format/precision=3,/pgf/number format/fixed zerofill}]
+\addplot[fill=gray!25,draw=black] coordinates {(1981--2020,6.0915690082) (2021--2025,4.8317666086)};
+\addplot[fill=gray!55,draw=black] coordinates {(1981--2020,6.4789662093) (2021--2025,5.8104856639)};
+\addplot[fill=black!85,draw=black] coordinates {(1981--2020,7.1844917063) (2021--2025,7.0119118892)};
+\legend{B1,C4,IND}
+\end{axis}
+\end{tikzpicture}
+\caption{Annual utility by model and evaluation window. Values are the point estimates in Exhibit~\ref{tab:performance}; no confidence intervals for individual model utilities are supplied by the accepted final analysis. The primary period contains 480 monthly returns and the nonoverlapping extension contains 60.}\label{fig:utilities}
+\end{figure}
+
+\subsection{Development evidence}
+The combined procedure builds on earlier controlled studies of individual extensions. E2, E3, and E4 were each evaluated using three fixed random-feature seeds and produced positive mean parent contrasts in their primary periods; their original adjusted confidence intervals included zero. Supplemental Appendix~D reports these studies together with the existing capacity, smoothing, state-exposure, and amplitude controls. The initial confidence-based E1 was not carried into the final model. These studies test incremental additions under their original designs; their differences are not an additive decomposition of the final annual gain. The final experiment evaluates B1, C4, and IND on matched paths, measuring the combined procedure's performance and the descriptive contribution of its industry projection. The original author seed was fixed before the final numerical run, providing a reproducible link to the released random-feature construction. Matched annual layer comparisons would further assess attribution under the final selection procedure.
+
+\FloatBarrier
+\section{Discussion}\label{sec:discussion}
+The empirical results show higher historical utility for the evaluated combination of adaptive representations and incremental exposure control. Cross-sectional scaling changes the inputs to fixed nonlinear features; temporal transformations allow characteristic themes to respond differently to recent movements; and valuation conditioning permits the learned target to vary with market state. These choices expand the representation available to the learner while the covariance model and trading rule continue to determine how risk and implementation costs enter the decision.
+
+The return decomposition helps interpret the improvement. Relative to reconstructed B1, the combined strategy accepts higher volatility and impact costs in exchange for a larger increase in mean return. Its higher utility therefore reflects a more favorable balance among the components of the objective. This is the economically relevant comparison for the specified investor, whose risk aversion and wealth path are held common across methods.
+
+The industry projection provides a complementary form of control. It reallocates the C4-minus-B1 target within the risk-and-impact metric while preserving the baseline target's net industry allocation. In the primary comparison, it reduces both volatility and modeled impact cost relative to C4 and increases utility despite giving up some gross mean return. The target restriction and the original trading rule operate together: the projection determines the incremental aim, and the trading rule governs its implementation through inherited holdings.
+
+The implementation record strengthens the interpretation of these comparisons. All methods start from common inherited holdings, pay the first rebalance and subsequent annual switches, and carry their own positions continuously through 540 monthly observations. Independent verification reconciles annual selections, saved coefficients, realized holdings, and the reported economic statistics. These checks make the link between the specified learning procedure and its measured utility inspectable and reproducible.
+
+The evaluation fixes risk aversion ten and a common wealth path anchored at USD~10 billion in December 2020, within the reconstruction and cost conventions documented in Section~\ref{sec:data}. Annual fitting uses preceding outcomes. Specification development used previously examined history, including the 2021--2025 period, so the extension supplies additional historical evidence. The final annual comparison uses one random seed; the earlier three-seed studies provide component-level evidence. Additional random-feature draws, matched annual component comparisons, and decision-time datasets would extend the evidence on stability, attribution, and generalization.
+
+\section{Conclusion}
+This paper extends Portfolio-ML by learning a more adaptive representation of stock characteristics and controlling the incremental industry exposure of the resulting portfolio target. The approach combines bounded characteristic scales, theme-specific temporal transformations, valuation-state-dependent coefficients, and a risk-and-impact-weighted industry projection. These additions preserve the baseline covariance model, trading rule, and impact calibration. They provide a concrete way to adapt the learned target while maintaining the economic structure that translates that target into traded holdings.
+
+The primary finding is a statistically significant improvement in annual utility. Over 1981--2020, the combined strategy raises utility from 6.092\% for reconstructed Portfolio-ML to 7.184\%, a gain of 1.093 percentage points. The gain is statistically significant at 1\% under the released-code one-sided, unadjusted normal test ($p=0.001865$). Higher net excess returns more than compensate for the increase in risk. The empirical contribution is an improvement in the measured return--risk--cost objective on common inputs, with the comparison holding the investor's risk aversion and wealth convention fixed.
+
+The nonoverlapping 2021--2025 extension supplies additional historical evidence. Annual utility is 7.012\% for the combined strategy and 4.832\% for the reconstructed baseline, a 2.180 percentage-point gain that is statistically significant at 5\% under the same one-sided, unadjusted test ($p=0.044492$). Annual refitting and expanding-history selection use preceding outcomes, and holdings evolve continuously across both periods. These sixty later observations were previously examined during research development, so the extension remains a historical comparison.
+
+The combined procedure pairs representation learning with incremental exposure control. The representation layers determine how characteristics enter the portfolio target, while the industry projection restricts departures from the baseline's net industry allocation. Relative to the unprojected combined model, the projection lowers volatility and modeled impact cost in the primary period and increases utility. Earlier controlled component studies provide evidence about the individual additions under their own designs. Together, these findings motivate evaluating feature transformations and portfolio restrictions within the same economic objective.
+
+Further research can examine how the gains vary with investor size, risk preferences, and the random-feature dictionary, and refine attribution through matched annual layer comparisons. Evaluation on new observations and decision-time datasets would extend the historical evidence. The nominal tests and retrospective sensitivities do not resolve uncertainty from the complete specification search. The present study supplies a reproducible specification and a verified comparison: under the shared reconstruction and implementation conventions, the combined procedure achieved higher historical utility within the Portfolio-ML framework.
+
+
+\FloatBarrier
+\clearpage
+\begin{thebibliography}{99}
+\setlength{\itemsep}{5pt}
+\bibitem[Bailey et~al.(2017)]{bailey2017}
+Bailey, David H., Jonathan M. Borwein, Marcos L\'{o}pez de Prado, and Qiji Jim Zhu. 2017.
+``The Probability of Backtest Overfitting.''
+\textit{The Journal of Computational Finance} 20 (4): 39--69.
+\href{https://doi.org/10.21314/JCF.2016.322}{doi:10.21314/JCF.2016.322}.
+
+\bibitem[Brandt et~al.(2009)]{brandt2009}
+Brandt, Michael W., Pedro Santa-Clara, and Rossen Valkanov. 2009.
+``Parametric Portfolio Policies: Exploiting Characteristics in the Cross-Section of Equity Returns.''
+\textit{The Review of Financial Studies} 22 (9): 3411--3447.
+\href{https://doi.org/10.1093/rfs/hhp003}{doi:10.1093/rfs/hhp003}.
+
+\bibitem[DeMiguel et~al.(2020)]{demiguel2020}
+DeMiguel, Victor, Alberto Mart\'{i}n-Utrera, Francisco J. Nogales, and Raman Uppal. 2020.
+``A Transaction-Cost Perspective on the Multitude of Firm Characteristics.''
+\textit{The Review of Financial Studies} 33 (5): 2180--2222.
+\href{https://doi.org/10.1093/rfs/hhz085}{doi:10.1093/rfs/hhz085}.
+
+\bibitem[Fan et~al.(2026)]{fan2026}
+Fan, Jonathan S., Bryan T. Kelly, Semyon Malamud, and Yuan Zhang. 2026.
+``Recursive Portfolio Machines.''
+Swiss Finance Institute Research Paper No.~26-36. Working paper.
+\href{https://doi.org/10.2139/ssrn.6615198}{doi:10.2139/ssrn.6615198}.
+
+\bibitem[G\^{a}rleanu and Pedersen(2013)]{garleanu2013}
+G\^{a}rleanu, Nicolae, and Lasse Heje Pedersen. 2013.
+``Dynamic Trading with Predictable Returns and Transaction Costs.''
+\textit{The Journal of Finance} 68 (6): 2309--2340.
+\href{https://doi.org/10.1111/jofi.12080}{doi:10.1111/jofi.12080}.
+
+\bibitem[Harvey et~al.(2016)]{harvey2016}
+Harvey, Campbell R., Yan Liu, and Heqing Zhu. 2016.
+``\ldots\ and the Cross-Section of Expected Returns.''
+\textit{The Review of Financial Studies} 29 (1): 5--68.
+\href{https://doi.org/10.1093/rfs/hhv059}{doi:10.1093/rfs/hhv059}.
+
+\bibitem[Jensen et~al.(2023)]{jensen2023}
+Jensen, Theis Ingerslev, Bryan Kelly, and Lasse Heje Pedersen. 2023.
+``Is There a Replication Crisis in Finance?''
+\textit{The Journal of Finance} 78 (5): 2465--2518.
+\href{https://doi.org/10.1111/jofi.13249}{doi:10.1111/jofi.13249}.
+
+\bibitem[Jensen et~al.(2026)]{jensen2026}
+Jensen, Theis Ingerslev, Bryan Kelly, Semyon Malamud, and Lasse Heje Pedersen. 2026.
+``Machine Learning and the Implementable Efficient Frontier.''
+\textit{The Review of Financial Studies} 39 (10): 3035--3078.
+\href{https://doi.org/10.1093/rfs/hhag022}{doi:10.1093/rfs/hhag022}.
+
+\bibitem[Lobo et~al.(2007)]{lobo2007}
+Lobo, Miguel Sousa, Maryam Fazel, and Stephen Boyd. 2007.
+``Portfolio Optimization with Linear and Fixed Transaction Costs.''
+\textit{Annals of Operations Research} 152 (1): 341--365.
+\href{https://doi.org/10.1007/s10479-006-0145-1}{doi:10.1007/s10479-006-0145-1}.
+
+\bibitem[Politis and Romano(1994)]{politis1994}
+Politis, Dimitris N., and Joseph P. Romano. 1994.
+``The Stationary Bootstrap.''
+\textit{Journal of the American Statistical Association} 89 (428): 1303--1313.
+\href{https://doi.org/10.1080/01621459.1994.10476870}{doi:10.1080/01621459.1994.10476870}.
+
+\bibitem[Rahimi and Recht(2007)]{rahimi2007}
+Rahimi, Ali, and Benjamin Recht. 2007.
+``Random Features for Large-Scale Kernel Machines.''
+\textit{Advances in Neural Information Processing Systems} 20.
+\href{https://papers.nips.cc/paper_files/paper/2007/hash/013a006f03dbc5392effeb8f18fda755-Abstract.html}{Official proceedings}.
+
+\bibitem[White(2000)]{white2000}
+White, Halbert. 2000.
+``A Reality Check for Data Snooping.''
+\textit{Econometrica} 68 (5): 1097--1126.
+\href{https://doi.org/10.1111/1468-0262.00152}{doi:10.1111/1468-0262.00152}.
+\end{thebibliography}
+\end{document}

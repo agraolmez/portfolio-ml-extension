@@ -1,0 +1,162 @@
+{
+  "study": "fresh_annual_selection_IND_1981_2020",
+  "version": 1,
+  "status": "PROPOSED_CONSEQUENTIAL_SETTINGS_AWAITING_USER_REPLY",
+  "plan": "docs/ANNUAL_IND_STUDY_PLAN_20260929.md",
+  "architecture": "existing_IND_C4_equal_target_ensemble_industry_projection",
+  "seeds": [
+    1,
+    2,
+    3
+  ],
+  "training_first_decision": "1965-11-30",
+  "validation_first_return": "1971-01-31",
+  "evaluation_returns": [
+    "1981-01-31",
+    "2020-12-31"
+  ],
+  "annual_fit_years": [
+    1971,
+    2020
+  ],
+  "fresh_optimization": true,
+  "old_fitted_parameters_used": false,
+  "old_results_regression_oracles_only": true,
+  "bootstrap_1971_parent": {
+    "status": "PROPOSED",
+    "baseline_only_validation_returns": [
+      "1966-01-31",
+      "1970-12-31"
+    ],
+    "p": 512,
+    "candidate_grid": "original_two_bandwidths_and_101_ridges",
+    "applies_only_to": 1971,
+    "training_uses_only_previous_years": true,
+    "excluded_from_main_baseline_validation": true
+  },
+  "base_parent_selection": {
+    "from_year": 1972,
+    "rule": "fresh_original_baseline_expanding_validation_from_January_1971",
+    "same_seed1_choice_shared_by_all_seeds": true,
+    "unexpected_non512_choice": "stop_do_not_coerce"
+  },
+  "extension_selection": {
+    "rule": "joint_annual_per_seed_cumulative_author_economic_objective",
+    "rho_in_tie_order": [
+      0.1,
+      0.01,
+      0.001
+    ],
+    "conditional_multipliers_in_tie_order": [
+      100,
+      10,
+      1
+    ],
+    "tie_tolerance": 1e-12,
+    "fit_penalties_in_validation_score": false,
+    "downstream_projection_tuned": false
+  },
+  "candidate_order": [
+    {
+      "rho": 0.1,
+      "multiplier": 100
+    },
+    {
+      "rho": 0.1,
+      "multiplier": 10
+    },
+    {
+      "rho": 0.1,
+      "multiplier": 1
+    },
+    {
+      "rho": 0.01,
+      "multiplier": 100
+    },
+    {
+      "rho": 0.01,
+      "multiplier": 10
+    },
+    {
+      "rho": 0.01,
+      "multiplier": 1
+    },
+    {
+      "rho": 0.001,
+      "multiplier": 100
+    },
+    {
+      "rho": 0.001,
+      "multiplier": 10
+    },
+    {
+      "rho": 0.001,
+      "multiplier": 1
+    }
+  ],
+  "preserve": [
+    "approved_corrected_wealth",
+    "fixed512_features",
+    "E2_eight_update_procedure",
+    "E3_six_month_reference_and_bounds",
+    "C4_state",
+    "three_original_frequency_seeds",
+    "risk_and_m",
+    "impact_accounting",
+    "inherited_exit_convention",
+    "fixed_IND_projection"
+  ],
+  "reported_paths": [
+    "B1",
+    "BENS",
+    "CENS",
+    "IND"
+  ],
+  "primary_contrast": [
+    "IND",
+    "B1"
+  ],
+  "initial_holdings": "common_source_market_value_weights_December_1980",
+  "annual_holdings_reset": false,
+  "inference": {
+    "author_released_Table3_one_sided_normal": true,
+    "stationary_bootstrap_draws": 10000,
+    "mean_blocks": [
+      12,
+      24
+    ],
+    "seed": 20260929,
+    "cumulative_family": 34,
+    "alpha": 0.05,
+    "bootstrap_refits": false,
+    "fresh_confirmation": false,
+    "full_adaptive_search_bias_removed": false
+  },
+  "compute_budget": {
+    "local_only": true,
+    "paid": false,
+    "total_active_seconds": 259200,
+    "pilot_active_seconds": 7200,
+    "full_launch_projection_contingency": 2.0,
+    "max_physical_footprint_gib": 16.0,
+    "min_system_headroom_gib": 4.0,
+    "max_additional_disk_gib": 20.0,
+    "min_free_disk_gib": 50.0,
+    "max_memory_cache_gib": 4.0,
+    "maximum_workers": 1,
+    "blas_threads": 1,
+    "one_heavy_job": true,
+    "required_native_memory_pressure": 1,
+    "allowed_swap_growth_bytes": 0
+  },
+  "output_root": "output/annual_ind_full_study_20260929",
+  "full_runner_implemented": false,
+  "stop_conditions": [
+    "failed_consequential_scientific_check",
+    "unconverged_temporal_candidate",
+    "resource_limit",
+    "missing_or_changed_source",
+    "need_for_new_scientific_decision"
+  ],
+  "original_studies_preserved": true
+}

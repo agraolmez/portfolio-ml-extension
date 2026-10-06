@@ -1,0 +1,298 @@
+\documentclass[12pt,letterpaper,fleqn]{article}
+\usepackage[margin=1in,headheight=15pt]{geometry}
+
+\usepackage{stix2}
+\usepackage[no-math]{fontspec}
+% The exported submission PDF uses Times New Roman. The sandboxed editor
+% falls back to bundled Times-compatible glyphs when system fonts are inaccessible.
+\IfFontExistsTF{Times New Roman}{\setmainfont{Times New Roman}}{%
+\setmainfont{texgyretermes-regular.otf}[BoldFont=texgyretermes-bold.otf,
+ItalicFont=texgyretermes-italic.otf,BoldItalicFont=texgyretermes-bolditalic.otf]}
+\usepackage{placeins}
+\usepackage{amsmath,amssymb,booktabs,array,longtable}
+\usepackage{microtype,setspace}
+\usepackage{titlesec,fancyhdr}
+\usepackage[font=small,labelfont=bf,labelsep=period,justification=raggedright,singlelinecheck=false]{caption}
+\usepackage[round,authoryear]{natbib}
+\usepackage{tikz}
+\usetikzlibrary{arrows.meta,positioning}
+\usepackage{pgfplots}
+\pgfplotsset{compat=1.18}
+\usepackage[colorlinks=true,linkcolor=black,citecolor=black,urlcolor=black]{hyperref}
+\hypersetup{pdftitle={Learned Representations and Industry Constraints in Implementable Portfolio Choice},pdfauthor={Agra Emir Olmez},pdfsubject={Supplemental Material}}
+\setstretch{1.0}
+\setlength{\parskip}{12pt}
+\setlength{\parindent}{0.5in}
+\setlength{\mathindent}{0.5in}
+\setlength{\emergencystretch}{2em}
+\clubpenalty=10000
+\widowpenalty=10000
+\displaywidowpenalty=10000
+\brokenpenalty=10000
+\raggedbottom
+\renewcommand{\arraystretch}{1.12}
+\titleformat{\section}{\normalfont\normalsize\bfseries}{\thesection}{0.7em}{\MakeUppercase}
+\titleformat{\subsection}{\normalfont\normalsize\bfseries}{\thesubsection}{0.7em}{}
+\titlespacing*{\section}{0pt}{2.1ex plus 0.5ex minus 0.2ex}{0.9ex}
+\titlespacing*{\subsection}{0.5in}{1.6ex plus 0.4ex minus 0.2ex}{0.5ex}
+\pagestyle{fancy}
+\fancyhf{}
+\fancyhead[L]{}
+\fancyhead[R]{}
+\fancyfoot[C]{\small\thepage}
+\renewcommand{\headrulewidth}{0pt}
+\setlength{\textfloatsep}{18pt plus 3pt minus 2pt}
+\setlength{\floatsep}{14pt plus 2pt minus 2pt}
+\renewcommand{\topfraction}{0.85}
+\renewcommand{\bottomfraction}{0.75}
+\renewcommand{\textfraction}{0.12}
+\newcounter{exhibit}
+\makeatletter
+\let\c@table\c@exhibit
+\let\c@figure\c@exhibit
+\renewcommand{\thetable}{\arabic{exhibit}}
+\renewcommand{\thefigure}{\arabic{exhibit}}
+\renewcommand{\tablename}{Exhibit}
+\renewcommand{\figurename}{Exhibit}
+\setlength{\@fptop}{0pt}
+\makeatother
+\newcommand{\papertitle}{Learned Representations and Industry Constraints in Implementable Portfolio Choice}
+\newcommand{\paperdate}{October 5, 2026}
+\newcommand{\printtitle}{\begingroup\setlength{\parindent}{0pt}\raggedright
+{\fontsize{18}{22}\selectfont\bfseries\papertitle\par}\endgroup}
+\renewenvironment{abstract}{\begingroup\setlength{\parindent}{0pt}\noindent\textbf{Abstract}\par}{\par\endgroup}
+\newcommand{\E}{\mathbb{E}}
+\newcommand{\R}{\mathbb{R}}
+\newcommand{\Var}{\operatorname{Var}}
+\newcommand{\diag}{\operatorname{diag}}
+\newcommand{\argmax}{\operatorname*{arg\,max}}
+\newcommand{\argmin}{\operatorname*{arg\,min}}
+\newcommand{\tabnote}[1]{\par\vspace{4pt}{\setlength{\parskip}{0pt}\footnotesize\setstretch{1.03}\raggedright\noindent #1\par}}
+\begin{document}
+\noindent{\large\bfseries Supplemental Material}\par
+\printtitle
+\noindent\paperdate
+
+\noindent This supplement accompanies the main article. Appendices A--F retain the technical implementation, industry-projection derivation, metric conventions, component-development evidence, retrospective dependence sensitivities, and data-availability record. Equation and exhibit numbering continue from the main article.
+\setcounter{equation}{16}
+\setcounter{exhibit}{6}
+\appendix
+
+\section{Implementation details}\label{app:implementation}
+\subsection{Random features and normalization}
+The source covariance-bandwidth convention is $W_{\cdot k}\sim N(0,\eta I_{115})$, with $\eta\in\{e^{-3},e^{-2}\}$. The bandwidth $\eta$ is distinct from the temporal gains $g_h$. The grid contains $P\in\{64,128,256,512\}$ nonconstant features and
+\begin{equation}
+ \lambda\in\{0\}\cup\left\{\exp\left(-10+\frac{20k}{99}\right):k=0,\ldots,99\right\}
+\end{equation}
+There are two bandwidths, four widths, and 101 penalties, giving 808 settings. The code treats the listed bandwidth as a covariance multiplier, whereas the printed paper describes a standard-deviation parameter. The reconstruction preserves the released draws.
+
+Let $f_{ij,t}$ denote an unnormalized nonconstant Fourier feature, $N_t$ the aligned cross-sectional size, and $\sigma_{i,t}=\sqrt{\Sigma_{ii,t}}$. The normalization is
+\begin{equation}\label{eq:normalize}
+ B_{i0,t}=\frac{1}{\sqrt{N_t}\sigma_{i,t}},\qquad
+ B_{ij,t}=\frac{f_{ij,t}-\bar f_{j,t}}
+ {\sigma_{i,t}\sqrt{\sum_{k=1}^{N_t}(f_{kj,t}-\bar f_{j,t})^2}},\quad j>0
+\end{equation}
+Thus demeaning and unit Euclidean normalization precede inverse-volatility scaling. Final scaled columns need not sum to zero. Historical slices are aligned and normalized on the current decision's active security identifiers, following the unbalanced source convention. Constant or invalid feature norms and invalid volatility inputs are not silently repaired.
+
+\subsection{Finite-history economic operators}
+Write $G_{t-\ell}$ for the diagonal matrix of stock gross total-return growth divided by market gross growth over the corresponding month. With the current decision's inertia matrix held fixed inside the approximation, define
+\begin{equation}
+ P_{t,0}=I,\qquad
+ P_{t,k}=\prod_{j=0}^{k-1}(M_tG_{t-j}),\quad k=1,\ldots,11
+\end{equation}
+where factors are multiplied in increasing $j$ order from left to right. The normalized current operator is
+\begin{equation}
+ \Omega_t=\left(\sum_{k=0}^{11}P_{t,k}\right)^{-1}
+                 \sum_{k=0}^{11}P_{t,k}B_{t-k}
+\end{equation}
+Construct $\Omega_t^{-}$ analogously using feature slices $t-1,\ldots,t-12$ and growth slices starting at $G_{t-1}$, still retaining $M_t$. Then
+\begin{equation}
+ \Delta\Omega_t=\Omega_t-G_t\Omega_t^{-}
+\end{equation}
+In these formulas $B_{t-k}$ denotes a historical slice aligned and normalized over decision-$t$ identifiers, not a separately constructed target design for month $t-k$. Missing historical stock-to-market growth ratios are set to one; unavailable historical volatility scales use the source month's cross-sectional median. Thirteen feature slices supply the two twelve-term operators. For E4, each feature slice is expanded using its own $c_{t-k}$ before the operator is formed. Reusing the current state throughout the lookback would be a different model. Equal averaging of monthly moments in equation~(7) of the main article should also be distinguished from exponential weighting in the daily risk estimator.
+
+\subsection{Profile objectives and numerical settings}
+Let $J(\theta,g)$ denote the value of the economic objective after the exact coefficient solve, including coefficient ridge but before scale and gain penalties. Set $J_0=J(0,\mathbf 1)>0$ at the annual fixed-baseline coordinate and $\alpha_\theta=0.01J_0$. E2 maximizes
+\begin{equation}
+ \frac{J(\theta,\mathbf1)}{J_0}-0.005\|\theta\|_2^2
+ \quad\text{subject to}\quad
+ \mathbf1'\theta=0,\quad\|\theta\|_\infty\leq\log2
+\end{equation}
+It starts at zero, uses a normalized projected-gradient tolerance of $10^{-6}$, an initial relative step of 0.25, Armijo parameter $10^{-4}$, at most sixteen backtracking trials, and at most eight accepted scale updates. The objective normalizer and penalty level are determined from the corresponding fitting history.
+
+Holding $\widehat\theta$ fixed, E3 maximizes
+\begin{equation}\label{eq:e3objective}
+ \frac{J(\widehat\theta,g)-\tfrac12\alpha_\theta\|\widehat\theta\|_2^2}{J_0}
+       -\frac{\rho}{13}\sum_{h=1}^{13}(g_h-1)^2,
+       \qquad g\in[0,2]^{13}
+\end{equation}
+The scale penalty is constant during this optimization but retained in reported objective levels. The normalizer is the original fixed-baseline $J_0$, not the optimized E2 objective. The L-BFGS-B fit starts at $\mathbf1$, uses projected-gradient tolerance $10^{-5}$, and permits at most one hundred updates and 250 evaluations, with at most sixteen line-search steps per iteration and history size ten. Relative function-tolerance stopping is disabled. Fits must pass the accepted convergence gates before deployment.
+
+E4 uses the expanded design $[B_t,c_tB_{t,1:P}]$ and penalty
+\begin{equation}
+ R_{E4}=\diag(\lambda I_{P+1},m\lambda I_P)
+\end{equation}
+The source's zero-ridge case is retained without a hidden ridge addition. The state requires positive finite book-to-market inputs and valid market equity; normalization uses a standard-deviation floor of $10^{-12}$ in its validity checks. Inactive states retain an explicit reason rather than being treated as observed zero dispersion.
+
+\subsection{Risk and holdings details}
+The factor representation is $\Sigma_t=L_tF_tL_t'+\diag(s_t^2)$. Industry indicators and signed characteristic-theme means form $L_t$; theme exposures are standardized cross-sectionally by their sample standard deviation. Daily regressions use preceding month-end exposures. The source factor history targets 2,520 daily observations; the first available covariance window contains 2,518, and fewer than 2,490 fails the history gate. Exponential half-lives are 378 trading days for factor correlations and 126 for factor variances. Weighted covariance divides by $1-\sum_j\widetilde\omega_j^2$ for normalized weights. Recombined factor covariance is multiplied by twenty-one.
+
+Specific variance follows a lagged, zero-mean exponentially weighted estimate with half-life 126, initialized from sixty-three squared residuals divided by sixty-two. Its density requirement is two hundred lagged observations in 252 trading dates. Unavailable specific volatility uses a within-size median followed by an overall-size fallback. These inherited conventions remain common across models.
+
+For a continuing security, actual holdings evolve as
+\begin{equation}\label{eq:drift}
+ h_{i,t+1}=w_{i,t}\frac{1+R_{i,t+1}}{1+R^M_{t+1}}
+\end{equation}
+The denominator is the growth of the exogenous market-linked wealth path, not the strategy's realized return. This matters for reproducing subsequent trades. Entrants inherit zero; exits follow the omission convention described in the main article\textquotesingle s ``Data and Baseline Reconstruction\textquotedblright\ section. The inertia calculation retains expected monthly growth 0.007, the French monthly risk-free series, and ten source iterations. The accepted outcome reconstruction instead uses the CRSP bill reference where documented. We do not substitute one universal risk-free series throughout the machinery or equate ten-iteration source parity with exact fixed-point convergence.
+
+\section{Derivation and interpretation of the industry projection}\label{app:projection}
+Suppress the date subscript. For positive-definite $Q$, the Lagrangian of equation~(12) of the main article, using a factor-two normalization for the multiplier, is
+\begin{equation}
+ \mathcal L(v,\nu)=(v-d)'Q(v-d)+2\nu'H'v
+\end{equation}
+The first-order conditions give $Q(v-d)+H\nu=0$ and $H'v=0$. Hence
+\begin{equation}
+ v=d-Q^{-1}H\nu,\qquad
+ \nu=(H'Q^{-1}H)^{-1}H'd
+\end{equation}
+which yields equation~(13) of the main article. Because $Q$ is positive definite and the twelve industry columns are independent, the solution is unique. The numerical implementation applies the factor-structured inverse using Woodbury and Cholesky solves and checks the constraint and first-order-condition residuals. Invalid or rank-deficient inputs fail; there is no added jitter, pseudoinverse, eigenvalue floor, or post-hoc rescaling.
+
+Let $e=d-z$. Feasibility implies $H'z=0$, while the first-order condition implies $e=Q^{-1}H\nu$. Therefore $z'Qe=0$ and
+\begin{equation}
+ d'Qd=z'Qz+e'Qe\geq z'Qz
+\end{equation}
+This contraction is a property of the incremental vector in the chosen metric. It is not a statement that the total target $a^B+z$ has lower risk than $a^B$, nor that its realized trading cost is lower. Cross-terms with the baseline and inherited holdings still matter.
+
+Likewise, $H'(a^{IND}-a^B)=0$ does not imply industry-neutral executed differences. Even starting from identical inherited holdings,
+\begin{equation}
+ w^{IND}-w^B=(I-M)z
+\end{equation}
+and $H'(I-M)z$ need not vanish. With different own-path inherited holdings, an additional $M(h^{IND}-h^B)$ term appears. Since the industry indicators exhaust the active universe, $H'z=0$ also makes the projected increment's aggregate net weight zero; equivalently, the final aim has the same aggregate net exposure as B1. It imposes no analogous restriction on gross leverage.
+
+\section{Utility, the flow statistic, and exact units}\label{app:metrics}
+For strategy $k$, equation~(15) of the main article gives
+\begin{equation}
+ \bar f_k=\bar r^n_k-5\frac{N-1}{N}s_{g,k}^2
+\end{equation}
+Consequently,
+\begin{equation}
+ U_{IND}-U_{B1}
+ =12\bar D-\frac{60}{N}(s_{g,IND}^2-s_{g,B1}^2)
+\end{equation}
+The difference between displayed utility and annualized mean flow follows directly from the variance convention. Period-specific means are used when forming each period's flows.
+
+For an arithmetic utility decomposition, write $\overline{\operatorname{TC}}_k$ for mean monthly modeled cost. Then
+\begin{equation}
+ \Delta U=12\Delta\bar r^g-12\Delta\overline{\operatorname{TC}}
+                         -60\Delta s_g^2
+\end{equation}
+All underlying return and cost files use decimal fractions. Multiplying utility or return levels by one hundred produces percentages; multiplying a utility difference by one hundred produces percentage points, and multiplying it by ten thousand produces basis points. Return means are arithmetic annualized excess returns.
+
+\section{Earlier component studies}\label{app:development}
+The initial E1 experiment used dispersion across one hundred historical block-bootstrap coefficient refits to inform a bounded, portfolio-wide multiplier on the original trade, preserving the baseline aim and adjustment matrix. Its primary specification, A1, added the dispersion measure and its interaction with trade--holdings alignment to a matched learner. In the 2011--2020 evaluation, A1 did not establish an incremental utility benefit over the reconstructed baseline or matched learner, and E1 was not carried into the final combined model.
+
+Exhibit~\ref{tab:development} retains the earlier primary parent comparisons. All use net-population-variance utility, $12[\bar r^n-5\Var_{pop}(r^n)]$, and paired stationary circular resampling with ten thousand draws. Each study recomputes utility in the resampled months, with fits and selections held fixed. E2--E4 summarize three separate seed statistics; they do not treat seed observations as additional independent months. The adjusted intervals concern their own comparison families and cannot be transferred to the final gross-sample-variance annual contrast.
+
+The six-comparison sensitivity in the main article\textquotesingle s ``Results\textquotedblright\ section comprises the four historical parent contrasts in Exhibit~\ref{tab:development}, the historical IND-versus-CENS comparison, and the final annual IND-versus-B1 comparison. CENS is the three-seed E4 target ensemble used in the earlier industry experiment. The calculation applies $p_{B}=\min\{6p,1\}$ to the final contrast's released-code $p$-value. These six contrasts were assembled retrospectively and span different evaluation windows and utility definitions. They exclude additional component controls, portfolio blends, and fixed agreement and risk adjustments in the development record. The earlier industry screen alone used a cumulative family of thirty-two contrasts across its own two periods and preceding screens. Consequently, $0.01119$ is a sensitivity for the six named contrasts, not a study-wide adjusted $p$-value or a correction for the full adaptive research process.
+
+\begin{table}[htbp]
+\centering\small
+\caption{Historical parent comparisons under their original analysis plans}\label{tab:development}
+\begin{tabular}{@{}llrrr@{}}
+\toprule Study & Primary return period & Difference & Adjusted interval & Family\\
+ & & (pp/year) & (pp/year) & size\\\midrule
+E1 minus R1 & 2011--2020 & $-0.0020$ & $[-0.3452,\ 0.2984]$ & 3\\
+E2 minus fixed 512 & 2011--2020 & $0.4109$ & $[-0.2964,\ 1.1544]$ & 6\\
+E3 minus E2 & 2011--2020 & $0.2021$ & $[-0.0917,\ 0.4823]$ & 4\\
+E4 minus E3 & 2016--2020 & $1.4028$ & $[-3.3340,\ 6.8077]$ & 3\\\bottomrule
+\end{tabular}
+\tabnote{Intervals are the original 95\% family-adjusted basic stationary-bootstrap intervals with expected block length twelve months and Bonferroni correction. The corresponding twenty-four-month block sensitivities also include zero for all four parent contrasts. The first row uses the named confidence-sensitive A1 specification against reconstructed R1; it is excluded from the final model. Point differences are rounded accepted historical values. These are development studies, not matched annual ablations of the final IND experiment.}
+\end{table}
+
+For E2, the twenty-four-month-block adjusted interval is $[-0.1963,1.0615]$ percentage points per year; for E3 it is $[-0.0459,0.4434]$; for E4 it is $[-2.7166,5.6578]$. E3 does not uniformly improve the point estimates of its other controls, and E2's primary point estimate is below that of the larger fixed dictionary. These earlier comparisons describe the development sequence under their own periods, controls, and inference procedures.
+
+Exhibit~\ref{tab:controls} presents the complete reconciled primary-period component-control record, including the parent contrasts above. A0 is the matched E1 learner without the confidence signal. The E2 risk-only and prediction controls learn scales under their respective objectives before an economic coefficient refit; ``joint'' trains scales and coefficients simultaneously, and ``joint-refit'' subsequently solves the economic coefficients exactly. Fixed 1,024 expands the fixed dictionary. The E3 fixed-smoothing control sets every temporal gain to 0.5; the current-only control learns theme gains without lagged inputs. CAP4 adds fixed nonlinear columns to match E4's coefficient count. SIZE4 instead fits one bounded scalar interaction between the valuation state and the parent aim. In the historical industry screen, BENS and CENS are actual portfolios formed from the baseline and E4 three-seed target ensembles. AMPL scales the unprojected CENS-minus-BENS increment to match the projected increment's risk-and-impact norm. It preserves the direction of the increment rather than removing its industry component.
+
+\begin{table}[!htbp]
+\centering\small
+\caption{Existing component and simpler-control comparisons}\label{tab:controls}
+\begin{tabular}{@{}lrrr@{}}
+\toprule Contrast & Difference & Adjusted 95\% interval & Family\\
+ & (pp/year) & (pp/year) & size\\\midrule
+\multicolumn{4}{@{}l}{\textit{Panel A: 2011--2020; net-population-variance utility}}\\[3pt]
+E1 A1 minus A0 & $-0.0221$ & $[-0.1789,\ 0.1188]$ & 3\\
+E1 A1 minus R1 & $-0.0020$ & $[-0.3452,\ 0.2984]$ & 3\\
+E2 minus fixed 512 & $0.4109$ & $[-0.2964,\ 1.1544]$ & 6\\
+E2 minus risk-only & $0.7422$ & $[0.1720,\ 1.3070]$ & 6\\
+E2 minus prediction & $0.2570$ & $[-0.2251,\ 0.7807]$ & 6\\
+E2 minus joint & $0.1375$ & $[-0.2305,\ 0.5796]$ & 6\\
+E2 minus joint-refit & $0.2370$ & $[-0.1061,\ 0.6199]$ & 6\\
+E2 minus fixed 1,024 & $-0.2784$ & $[-0.7654,\ 0.2666]$ & 6\\
+E3 minus E2 & $0.2021$ & $[-0.0917,\ 0.4823]$ & 4\\
+E3 minus fixed smoothing & $-0.0324$ & $[-0.2918,\ 0.2253]$ & 4\\
+E3 minus current-only & $0.2333$ & $[-1.2391,\ 1.6058]$ & 4\\
+E3 minus fixed 1,024 & $-0.0763$ & $[-0.6816,\ 0.4850]$ & 4\\[6pt]
+\multicolumn{4}{@{}l}{\textit{Panel B: 2016--2020; net-population-variance utility}}\\[3pt]
+E4 minus E3 & $1.4028$ & $[-3.3340,\ 6.8077]$ & 3\\
+E4 minus CAP4 & $1.1840$ & $[-3.7592,\ 6.5976]$ & 3\\
+E4 minus SIZE4 & $1.3960$ & $[-3.3490,\ 6.8175]$ & 3\\[6pt]
+\multicolumn{4}{@{}l}{\textit{Panel C: 2016--2020; gross-sample-variance utility}}\\[3pt]
+Historical IND minus B1 & $2.6138$ & $[-2.4020,\ 7.3606]$ & 32\\
+Historical IND minus BENS & $2.9052$ & $[-2.1356,\ 7.1963]$ & 32\\
+Historical IND minus CENS & $1.7132$ & $[-4.7996,\ 6.0987]$ & 32\\
+Historical IND minus AMPL & $1.5893$ & $[-4.4539,\ 5.7754]$ & 32\\\bottomrule
+\end{tabular}
+\tabnote{All intervals retain the original paired stationary circular bootstrap: 10,000 draws, mean block length twelve months, and basic two-sided 95\% intervals with Bonferroni adjustment for the displayed original family. Family size counts the original plan's comparisons, not only the rows displayed for that study. Panels A--B use $12[\bar r^n-5\Var_{pop}(r^n)]$; Panel C uses $12[\bar r^n-5s_g^2]$. E1 uses one feature seed; E2--E4 average three separately computed seed differences, not ensemble returns. Panel C recomputes utility from actual ensemble-target portfolio paths; B1 is seed one. Its family of thirty-two includes the earlier ensemble and adaptive screens and both historical evaluation periods. These are earlier development comparisons, not matched annual ablations of the final single-seed experiment.}
+\end{table}
+
+The component evidence is mixed. E2 exceeds the risk-only scale learner under its original twelve-month-block adjusted interval, but its point estimate is below the larger fixed dictionary. E3 does not outperform fixed smoothing in its point estimate. The E4 capacity and scalar-state controls and the historical industry amplitude control have positive point contrasts with adjusted intervals spanning zero. These findings motivate interpreting the final annual result as evidence about the combined procedure rather than demonstrated incremental value from every layer.
+
+\FloatBarrier
+\section{Retrospective dependence sensitivities}\label{app:dependence}
+After inspecting the completed annual results, we recomputed uncertainty from the saved B1 and IND paths without changing the main article's released-code test. Exhibit~\ref{tab:dependence} reports every lag choice and block length calculated in this sensitivity exercise for the primary 1981--2020 period and the nonoverlapping 2021--2025 extension. These diagnostics condition on the fitted models and selections; they neither repeat training nor adjust for specification search.
+
+For the monthly flow difference $D_t$ defined in the main article, let $u_t=D_t-\bar D$ and $\widehat\Gamma_k=N^{-1}\sum_{t=k+1}^{N}u_tu_{t-k}$. The heteroskedasticity-and-autocorrelation-consistent (HAC) normal test uses the Bartlett estimate $\widehat S_L=\widehat\Gamma_0+2\sum_{k=1}^{L}(1-k/(L+1))\widehat\Gamma_k$ and standard error $\sqrt{\widehat S_L/N}$, without a finite-sample multiplier. The full lag grid is $L\in\{1,3,6,12,24\}$.
+
+The paired stationary circular bootstrap uses 20,000 draws and expected block lengths twelve and twenty-four months. Each draw uses the same resampled month indices for both portfolios and recomputes their mean net return and gross-return sample variance. For each period, the random generator starts at seed 20261006; the twelve-month calculation precedes the twenty-four-month calculation in the same stream. The reported basic two-sided 95\% interval for utility difference $\widehat\Delta$ is $[2\widehat\Delta-q_{0.975},\,2\widehat\Delta-q_{0.025}]$, where $q_a$ is the bootstrap utility-difference quantile. Unlike the HAC test of mean flow, these intervals target the displayed sample-variance utility difference directly.
+
+\begin{table}[!htbp]
+\centering\small
+\caption{Retrospective dependence sensitivities for IND minus B1}\label{tab:dependence}
+\begin{tabular}{@{}lrr@{}}
+\toprule Calculation & 1981--2020 & 2021--2025\\
+ & 480 months & 60 months\\\midrule
+\multicolumn{3}{@{}l}{\textit{Panel A: one-sided normal $p$-values}}\\[3pt]
+Released-code standard error & $0.001865$ & $0.044492$\\
+HAC, 1 lag & $0.001391$ & $0.037185$\\
+HAC, 3 lags & $0.001268$ & $0.015645$\\
+HAC, 6 lags & $0.000992$ & $0.010412$\\
+HAC, 12 lags & $0.000113$ & $0.003359$\\
+HAC, 24 lags & $0.000014$ & $0.000160$\\[6pt]
+\multicolumn{3}{@{}l}{\textit{Panel B: basic bootstrap 95\% intervals (pp/year)}}\\[3pt]
+Mean block length 12 & $[0.5215,\ 1.6378]$ & $[0.7638,\ 3.7483]$\\
+Mean block length 24 & $[0.6027,\ 1.5663]$ & $[0.9903,\ 3.4585]$\\\bottomrule
+\end{tabular}
+\tabnote{Retrospective diagnostics on fixed saved paths; no multiplicity or broader research-search adjustment. Panel A retains period-specific gross-return centering in the released-code flow. Panel B recomputes the main article's utility statistic in each paired resample. The same two reported return windows and all five precomputed HAC lags are shown. These calculations provide sensitivity evidence and do not replace the main article's nominal test.}
+\end{table}
+
+Here the dependence corrections reduce estimated uncertainty: the aggregate lag-covariance contribution to the HAC estimate is negative. The bootstrap intervals are also positive. This pattern does not establish that any lag or block length is optimal. With only sixty observations in the extension, twelve- and twenty-four-month blocks leave few resampled blocks, and large HAC bandwidths are particularly sensitive to the realized sequence. The diagnostics do not establish a fresh holdout, historical information availability, or study-wide significance after model development.
+
+\FloatBarrier
+\section{Reproducibility and data availability}\label{app:reproduce}
+The numerical record preserves source and configuration locks, original acceptance inventories, annual models, tuning cutoffs, validation scores, monthly holdings and returns, and independent verification receipts. Final numerical review checks 2,427 original artifact hashes, 385 saved model bundles, forty-five independently reconstructed annual selections, 540 monthly portfolio records, and 539 subsequent holdings transitions. It independently reproduces the final utility and normal-test statistics and agrees with the saved base-R check. The paper-table verifier separately checks all 540 monthly JSON hashes and 1,620 method-month observations before reconciling the source aggregate tables. This manuscript reports six performance rows and two utility comparisons for the primary period and the nonoverlapping extension.
+
+The companion \texttt{reviewer\_replication/} package supplies aggregate monthly strategy returns, gross returns and modeled impact costs; the reconciled component-control table; expected manuscript statistics; and a portable verification script. Its \texttt{README.md} and \texttt{requirements.txt} describe installation. From the package root, a reviewer can write an independent output directory with:
+
+\par\noindent\begin{minipage}{\linewidth}\footnotesize
+\begin{verbatim}
+python scripts/verify_results.py --output /new/reviewer-results
+\end{verbatim}
+\end{minipage}\par
+The script recomputes aggregate performance, the released-code utility comparisons, and the retrospective dependence sensitivities. The component-control file preserves the earlier adjusted intervals and their definitions; verifying final-path arithmetic does not reproduce those original component fits. The package also includes authored implementation and configuration snapshots, a dependency inventory, and \texttt{RECONSTRUCTION.md} describing the vendor inputs and additional steps required for full reconstruction. It is a reviewer package accompanying this manuscript, not a claim of a public repository or completed public data deposit.
+
+The full local evidence record also retains the source locks, fitted models, annual selection records and security-level holdings used for the numerical audit. The package's source inventory and reconstruction guide map the included implementation to that record. Re-estimation requires compatible dependencies, licensed inputs and a separate output destination; the aggregate verifier does not invoke the training or data-preparation writers.
+
+Security-level source data are subject to their vendors' access and licensing terms and are not included in the reviewer package. Full data reconstruction and portfolio re-estimation require the underlying licensed inputs, released author dependencies, and the documented environment; aggregate verification alone does not reproduce those stages. A public replication-package deposit has not yet been made. Aggregate tables in the manuscript derive from the retained local records.
+
+
+\end{document}

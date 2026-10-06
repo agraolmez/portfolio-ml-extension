@@ -1,0 +1,47 @@
+{
+  "id": "feature-geometry-bounded-prototype-v1-20260914",
+  "scope": "Implementation verification and one prespecified development-year engineering exercise; not a performance study or protocol amendment",
+  "training_first_decision": "1980-12-31",
+  "training_last_decision": "1981-11-30",
+  "training_return_period": [
+    "1981-01",
+    "1981-12"
+  ],
+  "cutoff": "1981-12-31",
+  "decision_probe_date": "1981-12-31",
+  "nonconstant_features": 512,
+  "input_characteristics": 115,
+  "bandwidth_index": 0,
+  "frequency_draw": "Unchanged authors R seed 1, original bandwidth index 0; no seed selection",
+  "ridge": 1.0,
+  "scale_penalty": 0.001,
+  "bound": 0.6931471805599453,
+  "max_steps": 8,
+  "max_backtracks": 16,
+  "initial_step": 0.25,
+  "armijo": 0.0001,
+  "gradient_tolerance": 1e-08,
+  "geometry_objectives": [
+    "full",
+    "risk_only",
+    "return_prediction"
+  ],
+  "full_coefficient_refit_for_all_geometries": true,
+  "prediction_control": "Date-average cross-sectional squared error on current original-normalized signals, each stock weighted 1/n; same coefficient ridge and scale penalty, followed by full economic coefficient refit",
+  "identity_reference": "All twelve accepted monthly moment records at theta=0, same directions and 513 penalized coefficients",
+  "threads": 4,
+  "aggregate_memory_gib": 24,
+  "minimum_free_disk_gib": 30,
+  "maximum_output_gib": 2,
+  "historical_portfolio_path": false,
+  "selection_or_evaluation_outcomes_used": false,
+  "originality_established": false,
+  "performance_improvement_established": false,
+  "full_study_comparisons_pending": [
+    "Chronological annual geometry fitting and nested tuning",
+    "Predetermined multiple seeds and larger fixed-feature capacities",
+    "Matched joint-gradient optimization benchmark",
+    "Full-method Recursive Portfolio Machines comparison when accessible",
+    "Portfolio paths, utility inference and prior A0/A1/B2 references"
+  ]
+}

@@ -1,0 +1,15 @@
+{
+  "files_sha256": {
+    "PROVENANCE.json": "ba79a63ae9c47c1cb8222df5ca4e6d3ab20fd83394fdeddc3db58fba55999760",
+    "README.md": "63adc4822e842714e11c677e5ef7533d2212d64870807146ca83c011a6dd1885",
+    "data/component_controls.csv": "f5bccf2e532d4219d4ef9e62e5010344b09c4db677685cd73e3e4202816f130f",
+    "data/monthly_strategy_returns.csv": "1b1eaa8c5e527dcaa57f2fc2fadefa0068205fc4d5753d57f17dfe3fd2d396ef",
+    "data/six_comparison_scope.csv": "d942c6b0c5abdb3a6c8778a0f55cf563b5c74def8d9e1fe38b8d90b4177d2363",
+    "expected/bonferroni_sensitivity.json": "63fe18dd82a9adb9abaaba13a803a3d1ab697fe08365a1a00fb5b30f219c84de",
+    "expected/final_metrics.csv": "f0075a15df791e1958dc6b2f25eb21d768d1b5facbf8a345f18b3e95490fed31",
+    "expected/primary_and_secondary_comparisons.csv": "0d9f7da55f174877ccacde135c0027c8efb645d3667d476753761473c3aac0bb",
+    "expected/retrospective_dependence_sensitivity.csv": "7652efafadf167da5e24395291d497dd08133f72f930a9c4f8782071f2e0d9d3",
+    "requirements.txt": "8ae49e6fa7923223089c8943ebe6563d59101e18b3a93ee43f1390497a26b9a1",
+    "scripts/verify_results.py": "11dce607c1a68121e09634899fd58a14a6edc3aca0c3915a58d7cba0e97358ee"
+  }
+}

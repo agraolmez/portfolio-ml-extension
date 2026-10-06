@@ -1,0 +1,22 @@
+{
+  "id": "extension3-software-implementation-v1-20260918",
+  "status": "LOCAL_TRAINING_ENGINE_IMPLEMENTED_SETTINGS_PENDING",
+  "parent_method": "Extension2 full learned-characteristic-scale model, frozen per archived cutoff/seed",
+  "previous_audit": "docs/EXTENSION_3_AUDIT_20260918.md",
+  "scientific_settings_record": "config/extension3_temporal_audit_v1.json",
+  "scientific_settings_decision": "Unresolved. No proposal or synthetic fixture setting is adopted by this implementation.",
+  "new_modules": [
+    "temporal_extension/history.py",
+    "temporal_extension/streaming.py",
+    "temporal_extension/optimizer.py",
+    "temporal_extension/model.py",
+    "temporal_extension/training.py",
+    "temporal_extension/validation.py"
+  ],
+  "execution_entry_point": "fit_annual(parent, history, rho=..., objective_scale=..., optimizer_settings=...) is explicitly called only after historical approval; no scheduler or automatic fit entry point",
+  "validation_scope": "Chronological safety coordinator; scoring, aggregation, folds and validation stopping are caller-supplied after scientific approval.",
+  "nonconvergence_policy": "Finite last accepted parameters are diagnostic only in this engineering interface; eligible_for_portfolio_evaluation is false unless constrained stationarity tolerance passes.",
+  "verification_command": "PYTHONDONTWRITEBYTECODE=1 env/step3/bin/python scripts/extension3_implementation_checks.py --output NEW_PROJECT_OUTPUT_DIRECTORY",
+  "preserved_navigation_snapshot": "output/extension3_temporal_implementation_20260918/prior_navigation/temporal_extension_README_at_audit.md",
+  "preserved_navigation_sha256": "d92894e1272d6b097293c44ce487c6c7ac5f9f92e61aca1b096a1d96bc66f0fb"
+}

@@ -1,0 +1,55 @@
+{
+  "id": "annual-ind-single-seed-amendment-20260929",
+  "recorded_at_utc": "2026-09-29T13:54:16.925310+00:00",
+  "status": "USER_APPROVED_SINGLE_SEED_EXECUTION_OPTIMIZATION",
+  "parent_plan": "docs/ANNUAL_IND_JOINT_STUDY_PLAN_20260929.md",
+  "seeds": [
+    1
+  ],
+  "seed_rule": "Fixed authors seed 1; not selected using performance",
+  "full_original_grid_preserved": true,
+  "widths": [
+    64,
+    128,
+    256,
+    512
+  ],
+  "bandwidth_count": 2,
+  "ridge_count": 101,
+  "temporal_restraints": [
+    0.1,
+    0.01,
+    0.001
+  ],
+  "conditional_multipliers": [
+    100,
+    10,
+    1
+  ],
+  "fit_years": [
+    1971,
+    2020
+  ],
+  "evaluation_years": [
+    1981,
+    2020
+  ],
+  "planned_scale_fits": 40400,
+  "planned_temporal_fits": 121200,
+  "planned_conditional_candidate_slots": 363600,
+  "model_identity": "Single-seed IND; BENS collapses to seed-1 baseline and CENS to seed-1 conditional target",
+  "previous_three_seed_results_preserved": true,
+  "accounting_change": false,
+  "inference": "config/manuscript_inference_20260929.json",
+  "optimization_only_no_candidate_pruning": true,
+  "engineering_resource_ledger": "output/annual_ind_parallel_review_20260929/resource_ledger.json",
+  "engineering_total_cap_seconds": 7200,
+  "max_process_tree_gib": 16,
+  "min_system_available_gib": 4,
+  "no_swap_growth": true,
+  "normal_memory_pressure_required": true,
+  "workers": 8,
+  "blas_threads_per_worker": 1,
+  "full_study_runtime_limit_seconds": null,
+  "new_full_study_launched": false
+}

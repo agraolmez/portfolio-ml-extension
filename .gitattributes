@@ -1,0 +1,4 @@
+# Preserve the exact bytes recorded in release and source manifests.
+* -text
+*.pdf binary
+*.zip binary

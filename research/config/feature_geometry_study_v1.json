@@ -1,0 +1,92 @@
+{
+  "id": "feature-geometry-chronological-study-v1-20260914",
+  "scope": "Full expanding-window annual historical comparison conditional on the accepted original annual bandwidth and ridge choices; no fresh holdout or broad originality claim",
+  "training_first_decision": "1965-11-30",
+  "first_return_year": 1981,
+  "last_return_year": 2025,
+  "periods": {
+    "development": [
+      1981,
+      2000
+    ],
+    "selection_reference": [
+      2001,
+      2010
+    ],
+    "evaluation": [
+      2011,
+      2020
+    ],
+    "exposed_robustness": [
+      2021,
+      2025
+    ]
+  },
+  "training_rule": "For return year y, all monthly moments from November 1965 through November y-1; outcomes matured by December y-1; scales reset to zero and fitted separately each year",
+  "holdings_rule": "Common accepted R1 pretrade holdings at December 1980; each method carries its own holdings continuously through November 2025; first trade charged; no annual or period reset",
+  "input_characteristics": 115,
+  "features": 512,
+  "larger_features": 1024,
+  "frequency_seeds": [
+    1,
+    2,
+    3
+  ],
+  "frequency_rule": "R MASS::mvrnorm with covariance g I, 256 directions; seed 1 must exactly recover author files. Append 256 independent directions from seed 1000+s for nested 1024 features",
+  "methods": [
+    "fixed512",
+    "full",
+    "risk_only",
+    "return_prediction",
+    "joint",
+    "joint_refit",
+    "fixed1024"
+  ],
+  "original_m_unchanged": true,
+  "original_13_slice_12_term_operator_unchanged": true,
+  "coefficient_settings": "Accepted original prior-year selected bandwidth and ridge, used for all seeds and methods. These are conditional comparisons, not independently retuned competing estimators",
+  "larger_dictionary_ridge": "Same original ridge; also store double-ridge sensitivity without selecting on evaluation returns",
+  "geometry_settings": {
+    "bound": 0.6931471805599453,
+    "relative_scale_penalty": 0.01,
+    "max_steps": 8,
+    "max_backtracks": 16,
+    "initial_step": 0.25,
+    "armijo": 0.0001,
+    "gradient_tolerance": 1e-06
+  },
+  "objective_normalization": "Divide each geometry objective by its positive theta=0 profiled value. This fixes shrinkage/gradient tolerance in comparable relative units across supervision objectives; retain the exact original economic beta solution",
+  "prediction_ridge": "Original lambda times trace(prediction Gram)/trace(full economic Hessian) at theta=0 on the same training dates. This matches relative ridge curvature and uses no future outcomes",
+  "joint_optimizer": "Simultaneous projected theta and preconditioned beta gradient ascent from theta=0 and exact identity beta; beta preconditioner fixed at the initial economic Hessian plus ridge. Raw joint beta and exact final full-refit beta both produce separate paths",
+  "geometry_settings_selection": "Prespecified here before any new portfolio-path evaluation; engineering prototype informed feasibility. No search over geometry settings or seed selection; retain all variants",
+  "primary_contrasts": [
+    "full-fixed512",
+    "full-risk_only",
+    "full-return_prediction",
+    "full-joint",
+    "full-joint_refit",
+    "full-fixed1024"
+  ],
+  "primary_estimand": "Arithmetic mean of paired annual net utility differences across the three fixed seeds, not utility of an ensemble portfolio",
+  "inference": {
+    "replicas": 10000,
+    "block_months": [
+      12,
+      24
+    ],
+    "master_seed": 20260914,
+    "alpha": 0.05,
+    "family": 6,
+    "interval": "Paired stationary circular bootstrap; recompute mean and population variance; basic intervals with Bonferroni six-contrast adjustment"
+  },
+  "success_rule": "All six primary mean-seed differences positive with adjusted lower bounds above zero for both block lengths; positive individual-seed point estimates for all six comparisons; exposed robustness does not reverse the mean signs. Otherwise improvement beyond the comparison family is not established",
+  "resources": {
+    "threads": 4,
+    "aggregate_memory_gib": 24,
+    "minimum_free_disk_gib": 30,
+    "maximum_new_storage_gib": 10,
+    "concurrent_heavy_jobs": 1
+  },
+  "rpm_comparison": "Only implement from accessible full methods. Institutional abstract is insufficient; document missing full method without inventing a replica",
+  "prospective_step_11": "Remains cancelled; no automation, trading or external publication"
+}

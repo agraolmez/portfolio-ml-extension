@@ -1,0 +1,11 @@
+# Observed study versions; Python 3.12. Full re-estimation remains data/platform dependent.
+numpy==2.3.5
+pandas==2.2.3
+scipy==1.18.1
+pyarrow==25.0.1
+psutil==7.2.2
+threadpoolctl==3.6.0
+matplotlib==3.11.2
+requests==2.34.2
+psycopg2-binary==2.9.13
+openpyxl==3.1.5

@@ -1,0 +1,84 @@
+{
+  "contract_id": "step3-data-v1-20260910",
+  "status": "ACCEPTED_AUTHOR_CONVENTION_RECONSTRUCTION",
+  "source_route": "WRDS JKP and CRSP; LSEG only for identified independent cross-checks if accessible",
+  "storage": "year-partitioned Parquet, raw receipts and SQL, candidate prepared files, explicit acceptance manifest",
+  "raw_start": "1952-12-31",
+  "historical_end": "2025-12-31",
+  "first_pilot_decision": "1980-12-31",
+  "pilot_realization_start": "1981-01-31",
+  "pilot_realization_end": "1982-12-31",
+  "dictionary": {
+    "file": "config/feature_dictionary_v1.csv",
+    "count": 115,
+    "minimum_observed_before_imputation": 57,
+    "ival_me_is_alias_for_intrinsic_value": false
+  },
+  "unit_bindings": {
+    "jkp.me": "million_USD",
+    "market_equity_usd": "USD",
+    "jkp.dolvol_126d": "USD_per_day",
+    "jkp.rvol_252d": "decimal_daily_standard_deviation",
+    "crsp.monthly_return": "decimal_fraction",
+    "crsp.bill_return": "decimal_monthly_fraction",
+    "ff.WRDS_rf": "decimal_monthly_fraction"
+  },
+  "rates": {
+    "jkp_reference_index": 1000708,
+    "reference_name": "CRSP 30-Day Bill Returns",
+    "daily_divisor": 21,
+    "french_rf_is_distinct": true,
+    "automatic_fallback_allowed": false
+  },
+  "impact_coefficient_numerator": 0.2,
+  "monthly_covariance_daily_multiplier": 21,
+  "wealth": {
+    "anchor_date": "2020-12-31",
+    "anchor_usd": 10000000000,
+    "recurrence": "W_previous=W_current/(1+audited_market_total_return_current)"
+  },
+  "covariance_coverage": {
+    "factor_daily_window": 2520,
+    "source_initial_shortfall_warning_at": 2490,
+    "first_moment_offset_months": 12,
+    "first_covariance_date": "derive_from_actual_audited_factor_sample"
+  },
+  "information": {
+    "decision_features_use_future_outcomes": "rank_cross_section_depends_on_source_future_availability_screen",
+    "forward_returns_may_screen_current_universe": true,
+    "publication_timestamps": "not supplied in current WRDS export; source-rule availability must be distinguished from actual release timestamps",
+    "late_settlements_must_not_be_backdated": "source_G_delayed_value_attribution_explicitly_retained_for_benchmark_only",
+    "strict_causal_requirements_from_prior_contract": {
+      "decision_features_use_future_outcomes": false,
+      "forward_returns_may_screen_current_universe": false,
+      "late_settlements_must_not_be_backdated": true
+    },
+    "causal_execution_certified": false,
+    "applicability": "Named historical author benchmark; future prospective execution retains causal requirements"
+  },
+  "acceptance": {
+    "unique_keys_required": true,
+    "all_required_history_required": true,
+    "unresolved_required_outcomes_allowed": false,
+    "sample_source_failure_prevents_acceptance": "Unexplained source failures block acceptance; documented R0/R1 differences and benchmark assumptions are retained under the author-convention decision",
+    "source_imputation_must_be_labelled": true,
+    "synthetic_checks_cannot_accept_historical_inputs": true,
+    "outcome_resolution_meaning": "Every required outcome has a documented benchmark rule; verified cash-settlement values are not claimed"
+  },
+  "scientific_decisions_modified": false,
+  "acceptance_manifest": "output/step3_author_conventions_20260911/acceptance_manifest.json",
+  "notebook": "notebooks/STEP_3_AUTHOR_CONVENTIONS.ipynb",
+  "source_observation_scope": {
+    "monthly_raw_through": "2025-12-31",
+    "candidate_through": "2025-12-31",
+    "daily_through": "2025-12-31",
+    "daily_ids": "2696 securities in the accepted source-rule universe; selected daily partitions checked by required year"
+  },
+  "latest_repair_vintage": "author_conventions_20260911",
+  "valuation_proposal": "docs/STEP_3_VALUATION_DECISION.md",
+  "valuation_assumptions_adopted": false,
+  "accepted_bundle": "data/prepared/step3_author_v3",
+  "step3_complete": true,
+  "author_convention_decision": "config/step3_author_conventions.json",
+  "valuation_proposal_status": "SUPERSEDED_NOT_ADOPTED"
+}

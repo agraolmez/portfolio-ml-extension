@@ -1,0 +1,7 @@
+entry,challenger,comparator,return_period,study_role,source
+1,E1 (A1),reconstructed baseline R1,2011-2020,historical component study,docs/STEP_10_COMPLETION.md
+2,E2 full geometry,fixed512 baseline,2011-2020,historical component study,docs/FEATURE_GEOMETRY_STUDY_COMPLETION_20260917.md
+3,E2 + E3,E2 parent,2011-2020,historical component study,docs/EXTENSION_3_COMPLETION_20260924.md
+4,E2 + E3 + E4 (C4),E3 parent (P3),2016-2020,historical component study,docs/EXTENSION_4_COMPLETION_20260928.md
+5,historical IND,three-seed C4 ensemble CENS,2016-2020,historical industry screen,docs/INDUSTRY_PROJECTION_SCREEN_20260928.md
+6,final annual IND,reconstructed baseline B1,1981-2020,final annual primary comparison,output/paper_handoff_20261004/tables/primary_and_secondary_comparisons.csv

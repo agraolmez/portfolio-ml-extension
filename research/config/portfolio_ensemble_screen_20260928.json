@@ -1,0 +1,129 @@
+{
+  "study": "bounded_saved_target_ensemble_screen",
+  "version": 1,
+  "execution_authorized": true,
+  "training_authorized": false,
+  "output_root": "output/portfolio_ensemble_screen_20260928",
+  "decision_dates": [
+    "2015-12-31",
+    "2025-11-30"
+  ],
+  "periods": {
+    "primary": [
+      "2016-01-31",
+      "2020-12-31"
+    ],
+    "robustness": [
+      "2021-01-31",
+      "2025-12-31"
+    ]
+  },
+  "components": [
+    "B1",
+    "B2",
+    "B3",
+    "C1",
+    "C2",
+    "C3"
+  ],
+  "paths": [
+    "B1",
+    "B2",
+    "B3",
+    "C1",
+    "C2",
+    "C3",
+    "BENS",
+    "CENS",
+    "HALF"
+  ],
+  "mixtures": {
+    "BENS": [
+      0.3333333333333333,
+      0.3333333333333333,
+      0.3333333333333333,
+      0,
+      0,
+      0
+    ],
+    "CENS": [
+      0,
+      0,
+      0,
+      0.3333333333333333,
+      0.3333333333333333,
+      0.3333333333333333
+    ],
+    "HALF": [
+      0.16666666666666666,
+      0.16666666666666666,
+      0.16666666666666666,
+      0.16666666666666666,
+      0.16666666666666666,
+      0.16666666666666666
+    ]
+  },
+  "candidates": [
+    "CENS",
+    "HALF"
+  ],
+  "controls": [
+    "BENS",
+    "B1"
+  ],
+  "common_initial_holdings": "accepted fixed512 seed1 pretrade at December 2015 decision",
+  "first_switch_charged": true,
+  "continuous_through_2021": true,
+  "targets_frozen": true,
+  "coefficient_search": false,
+  "gamma": 10,
+  "utility": "12*(mean(net excess return)-5*sample variance(gross excess return))",
+  "descriptive_metric": "net population variance utility; never used to rescue failed source-utility gate",
+  "wealth": "unchanged approved corrected wealth",
+  "exit_convention": "inherit accepted remapping with no extra dropped-position liquidation cost",
+  "inference": {
+    "draws": 10000,
+    "expected_block_lengths": [
+      12,
+      24
+    ],
+    "master_seed": 20260928,
+    "alpha": 0.05,
+    "family": 8,
+    "method": "paired circular stationary bootstrap, same month indices across all paths; basic Bonferroni intervals",
+    "seed_rerolling": false,
+    "family_scope": "two candidates times two controls times two evaluation periods; block lengths are mandatory sensitivity checks"
+  },
+  "gate": {
+    "point_gains": "strictly positive source utility versus both controls in both periods",
+    "primary_inference": "strictly positive adjusted lower bounds versus both controls for both block lengths",
+    "both_pass_priority": "HALF",
+    "technical_checks_required": true,
+    "passing_meaning": "promising exploratory evidence eligible for a separately specified larger test",
+    "automatic_exhaustive_training": false
+  },
+  "limitations": [
+    "All outcome years have previously been exposed; this is exploratory, not fresh confirmation.",
+    "No direct comparable claim against the paper's 1981-2020 published 8.60% utility.",
+    "Bootstrap conditional on saved trained targets; no model re-estimation uncertainty.",
+    "Original source publication timestamps and revision vintages remain uncertified.",
+    "Convexity guarantees utility improvement over average component utilities only, not either control or future returns."
+  ],
+  "compute_budget": {
+    "local_only": true,
+    "paid": false,
+    "total_active_seconds": 1800,
+    "pilot_active_seconds": 1800,
+    "maximum_workers": 1,
+    "blas_threads": 1,
+    "max_physical_footprint_gib": 16.0,
+    "min_system_headroom_gib": 4.0,
+    "max_additional_disk_gib": 2.0,
+    "min_free_disk_gib": 50.0,
+    "one_heavy_job": true,
+    "native_memory_pressure": "normal only",
+    "swap_growth_bytes": 0
+  },
+  "preserve_prior_results_and_protected_science": true,
+  "publication_or_remote_push_authorized": false
+}

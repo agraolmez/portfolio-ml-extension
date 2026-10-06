@@ -1,0 +1,10 @@
+root <- normalizePath(commandArgs(trailingOnly=TRUE)[1])
+p <- file.path(root, "output/step3_author_conventions_20260911")
+x <- read.csv(file.path(p,"factor_R_comparison_inputs.csv"),check.names=FALSE)
+terms <- setdiff(names(x),c("date","id","ret_exc"))
+formula <- as.formula(paste("ret_exc~-1+",paste(terms,collapse="+")))
+result <- lapply(split(x,x$date),function(g) {
+  b <- coef(lm(formula,data=g))
+  data.frame(date=g$date[1],term=names(b),estimate=as.numeric(b))
+})
+write.csv(do.call(rbind,result),file.path(p,"factor_R_comparison.csv"),row.names=FALSE)

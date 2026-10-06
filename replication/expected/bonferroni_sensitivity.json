@@ -1,0 +1,8 @@
+{
+  "family_size": 6,
+  "input_p": "0.0018650026914852752",
+  "adjusted_p": "0.0111900161489116512",
+  "formula": "min(6*p,1)",
+  "scope": "Six retrospectively named contrasts; not complete historical search",
+  "complete_research_search_adjustment": false
+}

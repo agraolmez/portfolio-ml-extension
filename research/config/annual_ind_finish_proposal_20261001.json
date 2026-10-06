@@ -1,0 +1,16 @@
+{
+  "status": "AWAITING_USER_APPROVAL",
+  "scope": "Complete remaining temporal and conditional layers of the 2020 pilot using saved learned scales",
+  "requested_additional_compute_seconds": 14400,
+  "prior_charged_seconds": 21602.4195322528,
+  "temporal_wall_seconds_unchanged": 10800,
+  "max_physical_footprint_gib": 16,
+  "min_system_headroom_gib": 4,
+  "native_pressure": "NORMAL",
+  "allow_swap_growth": false,
+  "max_additional_disk_gib": 2,
+  "min_free_disk_gib": 50,
+  "full_historical_run": false,
+  "scientific_settings_changed": false,
+  "reason": "Earlier approved cumulative computing allowance is exhausted; no new numerical fitting until the pending approval is answered."
+}

@@ -1,0 +1,166 @@
+{
+  "study": "bounded_agreement_and_risk_calibration_screen",
+  "version": 1,
+  "execution_authorized": true,
+  "training_authorized": false,
+  "output_root": "output/adaptive_policy_screen_20260928",
+  "parent_screen": "output/portfolio_ensemble_screen_20260928/acceptance_manifest.json",
+  "decision_dates": [
+    "2015-12-31",
+    "2025-11-30"
+  ],
+  "periods": {
+    "primary": [
+      "2016-01-31",
+      "2020-12-31"
+    ],
+    "robustness": [
+      "2021-01-31",
+      "2025-12-31"
+    ]
+  },
+  "paths": [
+    "B1",
+    "BENS",
+    "CENS",
+    "AGREE",
+    "ASIZE",
+    "RISK",
+    "RBASE"
+  ],
+  "agreement": {
+    "departure": "matched-seed C4 target minus fixed512 target",
+    "mean": "arithmetic mean over seeds1,2,3",
+    "variance_ddof": 1,
+    "gate": "dbar^2/(dbar^2+sample_seed_variance)",
+    "zero_denominator_gate": 1.0,
+    "target": "BENS + stock_gate*dbar",
+    "amplitude_control": "BENS + h*dbar, h=sum(abs(stock_gate*dbar))/sum(abs(dbar)), zero denominator h=1",
+    "dispersion_interpretation": "random-feature seed disagreement, not calibrated predictive uncertainty",
+    "parameter_search": false
+  },
+  "risk_calibration": {
+    "reference": "canonical archived fixed512 seed1 holdings and gross excess returns only",
+    "reference_decisions": [
+      "2010-12-31",
+      "2025-10-31"
+    ],
+    "reference_return_dates": [
+      "2011-01-31",
+      "2025-11-30"
+    ],
+    "window_months": 60,
+    "maturity": "return_eom <= current decision_eom under accepted monthly timing",
+    "predicted_variance": "reference_weight.T @ accepted_covariance @ reference_weight",
+    "realized_variance": "sample variance of last 60 matured reference gross excess returns, ddof=1",
+    "scale": "min(1,sqrt(mean(past predicted variance)/past sample realized variance))",
+    "zero_realized_variance_scale": 1.0,
+    "target": "RISK=k*CENS; RBASE=k*BENS with identical k",
+    "increase_leverage": false,
+    "independent_of_overlay_outcomes": true,
+    "interpretation": "Causal common diagnostic of baseline risk-forecast mismatch; not calibrated C4 conditional variance or an expected-return forecast",
+    "parameter_search": false
+  },
+  "candidates": [
+    "AGREE",
+    "RISK"
+  ],
+  "comparisons": [
+    [
+      "AGREE",
+      "B1"
+    ],
+    [
+      "AGREE",
+      "BENS"
+    ],
+    [
+      "AGREE",
+      "CENS"
+    ],
+    [
+      "AGREE",
+      "ASIZE"
+    ],
+    [
+      "RISK",
+      "B1"
+    ],
+    [
+      "RISK",
+      "BENS"
+    ],
+    [
+      "RISK",
+      "CENS"
+    ],
+    [
+      "RISK",
+      "RBASE"
+    ]
+  ],
+  "common_initial_holdings": "accepted fixed512 seed1 pretrade December2015, shared by all7paths",
+  "first_switch_charged": true,
+  "continuous_through_2021": true,
+  "gamma": 10,
+  "utility": "12*(mean(net excess)-5*sample variance(gross excess))",
+  "secondary_utility": "net population variance utility, descriptive only",
+  "unchanged": [
+    "approved corrected wealth",
+    "m and risk model",
+    "impact costs",
+    "security universe",
+    "accepted source lag conventions",
+    "inherited omission of extra exit liquidation costs",
+    "all frozen trained targets"
+  ],
+  "inference": {
+    "draws": 10000,
+    "expected_block_lengths": [
+      12,
+      24
+    ],
+    "alpha": 0.05,
+    "family": 24,
+    "indices": "reuse exact hash-bound 40,000 date-index streams of preceding portfolio_ensemble_screen; no random rerolling",
+    "family_scope": "16 current contrasts (8 pairs times2periods) plus8 preceding ensemble-screen contrasts; previous intervals retained and new combined-family intervals saved separately",
+    "broader_research_multiplicity_control_established": false,
+    "method": "paired stationary circular bootstrap, basic Bonferroni intervals; both lengths must pass"
+  },
+  "gate": {
+    "point": "candidate utility strictly exceeds all4 specified controls in both periods",
+    "primary": "all4 primary adjusted lower bounds strictly positive at bothblocklengths",
+    "technical_checks_required": true,
+    "tie_priority": "AGREE then RISK if bothpass, basedon more direct useof modeldisagreement",
+    "automatic_training_authorized": false,
+    "passing_meaning": "exploratory evidence eligible for separately specified larger research; not new confirmation"
+  },
+  "compute_budget": {
+    "local_only": true,
+    "paid": false,
+    "total_active_seconds": 1800,
+    "pilot_active_seconds": 1800,
+    "maximum_workers": 1,
+    "blas_threads": 1,
+    "max_physical_footprint_gib": 16.0,
+    "min_system_headroom_gib": 4.0,
+    "max_additional_disk_gib": 2.0,
+    "min_free_disk_gib": 50.0,
+    "one_heavy_job": true,
+    "native_memory_pressure": "normal only",
+    "swap_growth_bytes": 0
+  },
+  "novelty_established": false,
+  "all_outcome_periods_previously_exposed": true,
+  "published_paper_outperformance_established": false,
+  "limitations": [
+    "Conditional inference on saved models, not re-estimation uncertainty.",
+    "Coordinatewise shrinkage can disrupt covariance hedges.",
+    "Baseline risk calibration may not transfer to C4 and can sacrifice returns; it mixes conditional-variance errors and changing conditional means.",
+    "Generic volatility management and ensemble disagreement have existing prior art; this diagnostic makes no originality claim.",
+    "Fixed source-utility accounting differs from net-population utility; report both without changing primary gate.",
+    "The original paper published 1981\u20132020 numbers under another wealth recurrence; these shorter corrected-wealth periods cannot establish a direct victory."
+  ],
+  "preserve_prior_results_and_protected_science": true,
+  "publication_or_remote_push_authorized": false
+}

@@ -1,0 +1,32 @@
+{
+  "id": "extension3-computation-optimization-v3-20260919",
+  "execution": {
+    "workers": 4,
+    "trig_backend": "accelerate",
+    "blas_threads_per_worker": 1,
+    "native_thread_control": "BLASSetThreading(SINGLE_THREADED) on each thread",
+    "aggregation": "original chronological month and slice order",
+    "neutral_features": "original NumPy transformation",
+    "arithmetic": "float64; original economic equations and conditional coefficient solve",
+    "parallel_integrity_checks": true,
+    "rank_one_adjoint": true,
+    "shared_horner": true,
+    "packed_horner": false,
+    "neutral_operators": "original independent Horner recursions",
+    "additional_persistent_cache_bytes": 0,
+    "fused_feature_arrays": true,
+    "fused_adjoint_arrays": true,
+    "native_arithmetic": "IEEE binary64; fast math disabled; FMA contraction disabled",
+    "neutral_native_kernels": false
+  },
+  "verification": {
+    "absolute_tolerance": 1e-11,
+    "relative_tolerance": 1e-10,
+    "conditional_solve_residual": 1e-09,
+    "pilot_stationarity_tolerance": 1e-05
+  },
+  "scientific_settings_changed": false,
+  "resource_limits_changed": false,
+  "previous_source_files_modified": false,
+  "full_run_requires_separate_approval": true
+}

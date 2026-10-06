@@ -1,0 +1,34 @@
+{
+  "package_scope": "Aggregate replication accompanying the public code and findings repository",
+  "original_monthly_source": "output/annual_ind_staged_20261001/monthly.parquet",
+  "original_monthly_source_sha256": "f3caaa0f8820d91bb47a80c44808c5f2883aff22699941058a1f9cdf755c700b",
+  "original_lock_sha256": "a34d879224307ac320733e799c744eb73962c9471749698b7b832149a8571e62",
+  "original_component_summary_sha256": "f5bccf2e532d4219d4ef9e62e5010344b09c4db677685cd73e3e4202816f130f",
+  "original_diagnostics_summary_sha256": "d083e1b6c44fc37be1dddb885ace8e9bd8f56be4601e70c63913f340e904cf6d",
+  "author_identifiers_or_security_level_data_included": false,
+  "final_reporting_periods": [
+    [
+      1981,
+      2020
+    ],
+    [
+      2021,
+      2025
+    ]
+  ],
+  "execution_configuration_note": "The immutable original configuration retains an overlapping 2020-2025 development output; final reporting uses only the intended nonoverlapping 2021-2025 robustness period.",
+  "builder": "scripts/build_reviewer_replication_20261005.py",
+  "builder_sha256": "b64fe7c5cb668ed7b4d90d933f5fd0433c12c5f8d6abd808f178b051558afa98",
+  "environment": {
+    "python": "3.12.14",
+    "numpy": "2.3.5",
+    "pandas": "2.2.3",
+    "scipy": "1.18.1"
+  },
+  "excluded_third_party_sources": [
+    "references/extension4_package_20260924/extension4_reference.py"
+  ],
+  "original_reviewer_manifest_sha256": "b87f3bf976b69972955554e8cd5af3437dab92227a18d790466af0ddedd99ea9",
+  "implementation_location": "../research; see ../docs/source_inventory.csv",
+  "repository_url": "https://github.com/agraolmez/portfolio-ml"
+}

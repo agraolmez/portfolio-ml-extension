@@ -1,0 +1,34 @@
+{
+  "status": "PROPOSED_REQUIRES_USER_APPROVAL",
+  "prepared_at_utc": "2026-09-26T14:17:05.363805+00:00",
+  "original_protocol": "config/extension4_study_v1_proposed.json",
+  "original_min_system_headroom_gib": 8.0,
+  "proposed_min_system_headroom_gib": 4.0,
+  "pressure_guard": {
+    "source": "kern.memorystatus_vm_pressure_level",
+    "required_normal_dispatch_value": 1,
+    "stop_on_warning_critical_unknown_or_unavailable": true,
+    "sampling_seconds": 2.0
+  },
+  "unchanged": {
+    "max_physical_footprint_gib": 16.0,
+    "max_memory_cache_gib": 4.0,
+    "total_active_seconds": 259200,
+    "maximum_workers_in_use": 1,
+    "blas_threads": 1,
+    "max_additional_disk_gib": 20.0,
+    "min_free_disk_gib": 50.0,
+    "stop_on_swap_growth": true,
+    "local_only": true,
+    "paid": false
+  },
+  "prelaunch_requirements": [
+    "Explicit approval bound to this proposal and original approved protocol",
+    "Version and validate execution-only override without modifying approved scientific files or completed fit artifacts",
+    "Test pressure, availability, process-memory, swap and cumulative-budget guards",
+    "Verify saved checkpoint compatibility and first resumed completed fit, then continue approved full workflow automatically"
+  ],
+  "scientific_changes": false,
+  "implementation_complete": false,
+  "full_run_scope_unchanged": true
+}

@@ -1,0 +1,146 @@
+{
+  "study": "bounded_cost_weighted_industry_projection_screen",
+  "version": 1,
+  "execution_authorized": true,
+  "training_authorized": false,
+  "output_root": "output/industry_projection_screen_20260928",
+  "parent_screen": "output/portfolio_ensemble_screen_20260928/acceptance_manifest.json",
+  "prior_adaptive_screen": "output/adaptive_policy_screen_20260928/acceptance_manifest.json",
+  "decision_dates": [
+    "2015-12-31",
+    "2025-11-30"
+  ],
+  "periods": {
+    "primary": [
+      "2016-01-31",
+      "2020-12-31"
+    ],
+    "robustness": [
+      "2021-01-31",
+      "2025-12-31"
+    ]
+  },
+  "paths": [
+    "B1",
+    "BENS",
+    "CENS",
+    "IND",
+    "AMPL"
+  ],
+  "projection": {
+    "scope": "industry neutrality of incremental TARGET only",
+    "industry_names": [
+      "BusEq",
+      "Chems",
+      "Durbl",
+      "Enrgy",
+      "Hlth",
+      "Manuf",
+      "Money",
+      "NoDur",
+      "Other",
+      "Shops",
+      "Telcm",
+      "Utils"
+    ],
+    "factor_names_source": "output/step3_author_conventions_20260911/factor_calendar.json",
+    "all_25_covariance_factors_retained": true,
+    "departure": "d=CENS-BENS",
+    "metric": "Q=10*Sigma+wealth_usd*diag(impact)",
+    "projected_departure": "z=d-Q^-1*B*(B.T*Q^-1*B)^-1*B.T*d",
+    "target": "IND=BENS+z",
+    "amplitude_control": "AMPL=BENS+a*d, a=sqrt((z.T*Q*z)/(d.T*Q*d)); d=0 gives a=1",
+    "neutral": "disabled projection returns CENS exactly",
+    "numerical_method": "Exact Woodbury and positive-definite solves; independent dense oracle; no fitted ridge, floors or pseudo-inverse fallback",
+    "missing_singular_or_nonfinite": "fail closed",
+    "parameter_or_subset_search": false,
+    "interpretation": "Minimum Q-weighted distortion of incremental target under B.T*z=0. Q is a risk-plus-impact target distance, not the complete dynamic objective.",
+    "style_exposures_preserved_exactly": false,
+    "actual_executed_industry_neutrality_guaranteed": false
+  },
+  "candidates": [
+    "IND"
+  ],
+  "comparisons": [
+    [
+      "IND",
+      "B1"
+    ],
+    [
+      "IND",
+      "BENS"
+    ],
+    [
+      "IND",
+      "CENS"
+    ],
+    [
+      "IND",
+      "AMPL"
+    ]
+  ],
+  "common_initial_holdings": "accepted fixed512 seed1 pretrade December2015, shared by all5paths",
+  "first_switch_charged": true,
+  "continuous_through_2021": true,
+  "gamma": 10,
+  "utility": "12*(mean(net excess)-5*sample variance(gross excess))",
+  "secondary_utility": "net population variance utility, descriptive only",
+  "unchanged": [
+    "approved corrected wealth",
+    "m and risk model",
+    "impact costs",
+    "security universe",
+    "accepted source lag conventions",
+    "inherited omission of extra exit liquidation costs",
+    "all frozen trained targets"
+  ],
+  "inference": {
+    "draws": 10000,
+    "expected_block_lengths": [
+      12,
+      24
+    ],
+    "alpha": 0.05,
+    "family": 32,
+    "indices": "Reuse exact hash-bound40,000 ensemble-screen date streams, never reroll",
+    "family_scope": "8 current contrasts plus24 preceding ensemble/adaptive contrasts. Save new family32 intervals for previous contrasts; preserve earlier results.",
+    "broader_research_multiplicity_control_established": false,
+    "method": "paired stationary circular bootstrap, basic Bonferroni intervals; both lengths required"
+  },
+  "gate": {
+    "point": "IND source utility strictly exceeds B1,BENS,CENS,AMPL in both periods",
+    "primary": "all four primary adjusted lower bounds strictly positive at both block lengths",
+    "technical_checks_required": true,
+    "automatic_training_authorized": false,
+    "passing_meaning": "Exploratory finite-family evidence only; no fresh confirmation or guaranteed future return"
+  },
+  "compute_budget": {
+    "local_only": true,
+    "paid": false,
+    "total_active_seconds": 1800,
+    "pilot_active_seconds": 1800,
+    "maximum_workers": 1,
+    "blas_threads": 1,
+    "max_physical_footprint_gib": 16.0,
+    "min_system_headroom_gib": 4.0,
+    "max_additional_disk_gib": 2.0,
+    "min_free_disk_gib": 50.0,
+    "one_heavy_job": true,
+    "native_memory_pressure": "normal only",
+    "swap_growth_bytes": 0
+  },
+  "novelty_established": false,
+  "all_outcome_periods_previously_exposed": true,
+  "published_paper_outperformance_established": false,
+  "limitations": [
+    "Industry forecasts may contain real return information; removing them can reduce utility.",
+    "Target neutrality does not imply industry neutrality after m and inherited holdings.",
+    "Style exposures can change through correlated factor loadings.",
+    "The Q-norm identity concerns target distance, not actual costs or total portfolio utility.",
+    "Conditional inference on saved fitted targets does not account for model re-estimation.",
+    "Cumulative finite-family correction does not erase adaptive reuse of previously exposed history.",
+    "No changing the utility metric, period, factor subset or statistical method to force a win."
+  ],
+  "preserve_prior_results_and_protected_science": true,
+  "publication_or_remote_push_authorized": false
+}

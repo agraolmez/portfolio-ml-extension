@@ -1,0 +1,100 @@
+{
+  "id": "extension3-temporal-audit-v1-20260918",
+  "status": "ENGINEERING_ONLY_PROTOCOL_DECISIONS_PENDING",
+  "specification": "docs/EXTENSION_3_TEMPORAL_INPUT_PROPOSAL_20260918.md",
+  "specification_sha256": "e3988bddff2b84280964c1a3b9e859ab2f08bd511d9f8b7be86481835b26d463",
+  "parent": {
+    "method": "full",
+    "root": "output/feature_geometry_study_20260914",
+    "models": "fits/{year}/seed{seed}/full/model.npz",
+    "return_years": [
+      1981,
+      2025
+    ],
+    "seeds": [
+      1,
+      2,
+      3
+    ],
+    "model_count": 135,
+    "freeze": [
+      "theta",
+      "frequencies",
+      "annual_bandwidth",
+      "annual_ridge",
+      "Sigma",
+      "Lambda",
+      "m",
+      "wealth",
+      "eligibility",
+      "accounting"
+    ],
+    "conditional_beta_refit": true,
+    "learned_scales_reoptimized": false
+  },
+  "input_dimensions": 115,
+  "nonlinear_features": 512,
+  "coefficient_count_including_constant": 513,
+  "theme_count": 13,
+  "theme_mapping": "config/feature_dictionary_v1.csv",
+  "proposals_not_approved": {
+    "reference": {
+      "calendar_months": 6,
+      "weights": "equal",
+      "strictly_lagged": true
+    },
+    "gain_bounds": [
+      0,
+      2
+    ],
+    "missingness": "bypass current or required historical cells without genuine raw-source observations; no sample removal",
+    "penalty_selection": "chronological validation requires a separate fold-safe plan, or a separately approved predeclared penalty"
+  },
+  "unresolved": {
+    "reference_approval": null,
+    "gain_bounds_approval": null,
+    "bypass_approval": null,
+    "penalty_selection_protocol": null,
+    "penalty_values": null,
+    "temporal_objective_normalizer": null,
+    "optimization_tolerance": null,
+    "optimization_budget": null,
+    "validation_stopping": null,
+    "pilot_dates": null,
+    "pilot_compute_budget": null,
+    "control_gain_values": null,
+    "comparison_family_and_inference": null
+  },
+  "synthetic_test_tolerances": {
+    "neutral_inputs_features": "exact equality",
+    "neutral_moments_beta_aims_path": {
+      "atol": 1e-11,
+      "rtol": 1e-10
+    },
+    "finite_difference_gradient": {
+      "atol": 2e-07,
+      "rtol": 2e-05
+    },
+    "conditional_solve_relative_residual": 1e-09
+  },
+  "neutral_replay_scope": {
+    "decision_dates": [
+      "1981-11-30",
+      "1981-12-31"
+    ],
+    "seeds": [
+      1,
+      2,
+      3
+    ],
+    "gains": "all ones",
+    "new_historical_fit": false,
+    "purpose": "bounded archived equivalence across annual parent change; not a performance experiment"
+  },
+  "limitations": [
+    "Archived inputs retain future-return eligibility and unverified publication timing; only conditional temporal causality can be tested.",
+    "Parent scale optimization exhausted eight steps; no parent reoptimization.",
+    "No numerical scientific setting inferred from synthetic fixtures.",
+    "No optimizer, model-selection runner, nonneutral historical adapter or full-history experiment has been authorized by this audit."
+  ]
+}

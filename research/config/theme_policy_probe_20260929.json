@@ -1,0 +1,106 @@
+{
+  "study": "fixed_theme_polynomial_development_probe",
+  "version": 1,
+  "output_directory": "output/theme_policy_probe_20260929",
+  "years": [
+    1981,
+    1990,
+    2000
+  ],
+  "training_first": "1965-11-30",
+  "training_last": "1999-11-30",
+  "training_months_by_year": {
+    "1981": 181,
+    "1990": 289,
+    "2000": 409
+  },
+  "timing_dates": [
+    "1965-11-30",
+    "1980-11-30",
+    "1999-11-30"
+  ],
+  "methods": [
+    "B1",
+    "THEME40"
+  ],
+  "gamma": 10,
+  "basis": {
+    "dictionary": "config/feature_dictionary_v1.csv",
+    "dictionary_sha256": "2cf7976d62becc8dfcc3b3dafedad39ee9362d555575584b8c91f072b3f1dcaf",
+    "groups": "sorted",
+    "degrees": [
+      1,
+      2,
+      3
+    ],
+    "ordering": "degree_major",
+    "constant": true,
+    "columns": 40,
+    "theme_score": "mean(direction_j*(2*rank_j-1)) over every characteristic in each accepted theme",
+    "missing_rank": 0.5,
+    "preserve_observed_zero": true,
+    "normalization": "original cross-sectional center and L2 per nonconstant column; prepend1/sqrt(N); divide each row by accepted volatility",
+    "constant_columns": "fail, no column dropping or normalization floor",
+    "learned_scales": false,
+    "temporal_gains": false,
+    "random_mixtures": false,
+    "linear_14_fit": false
+  },
+  "ridge_rule": "accepted_baseline_prior_december_numeric_lambda",
+  "ridge_interpretation": "Same numerical per-column ridge and source normalization, not identical effective regularization across40 and513 coefficients. Penalize constant too.",
+  "fit_cutoff": "preceding December31; training decisions end preceding November30; all outcomes matured at cutoff",
+  "objective": "exact original 13-slice/12-term dynamic return-risk-trading-cost quadratic objective",
+  "initial_holdings": "accepted baseline fixed512 seed1 pretrade at preceding December31, separately for each selected year",
+  "holdings": "own continuous holdings inside each12month year; separate episodes, not one1981-2000 continuous history",
+  "first_switch_charged": true,
+  "unchanged": [
+    "m",
+    "gamma10",
+    "risk",
+    "impact",
+    "corrected wealth",
+    "universe",
+    "source timing",
+    "inherited omission of additional exit-liquidation costs"
+  ],
+  "utilities": {
+    "source": "12*(mean(net excess)-5*sample variance(gross excess))",
+    "secondary": "12*(mean(net excess)-5*population variance(net excess))"
+  },
+  "gate": {
+    "all_three_years_positive_both_utilities": true,
+    "all_technical_checks": true,
+    "all_fixed_years_required_regardless_of_interim_outcomes": true,
+    "automatic_full_study": false,
+    "significance_test": false,
+    "meaning": "Development consistency evidence only. Failure ends this fixed candidate without a full study; timing/resource failure is technically inconclusive, not negative performance."
+  },
+  "timing_gate": "Before fits or replay, measure all3fixed months. Project409monthly moments at max measured seconds/month plus initialization and measured work; require projected preparation within remaining1800second budget, reserving time for review. No tuning or sample substitution.",
+  "compute_budget": {
+    "total_active_seconds": 1800,
+    "pilot_active_seconds": 600,
+    "max_physical_footprint_gib": 16,
+    "min_system_headroom_gib": 4,
+    "min_free_disk_gib": 50,
+    "max_additional_disk_gib": 2,
+    "maximum_workers": 1,
+    "blas_threads": 1,
+    "native_memory_pressure": "normal only",
+    "swap_growth_bytes": 0,
+    "one_heavy_job": true,
+    "local_only": true,
+    "paid": false
+  },
+  "novelty_established": false,
+  "all_outcomes_previously_exposed": true,
+  "published_paper_outperformance_established": false,
+  "limitations": [
+    "No verified historically available1981 group/sign vintage.",
+    "Grouping loses within-theme distinctions; polynomials add fixed interactions within a theme, not arbitrary cross-theme interactions.",
+    "Source rank imputation means missing scores need not produce zero normalized polynomial features.",
+    "Three preselected development years cannot establish statistical significance.",
+    "Existing baseline lambda is causal but chosen for another representation."
+  ],
+  "preserve_prior_results": true,
+  "protected_scientific_files_unchanged": true
+}

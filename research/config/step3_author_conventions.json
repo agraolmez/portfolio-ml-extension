@@ -1,0 +1,44 @@
+{
+  "id": "step3-author-conventions-reconstruction-20260911",
+  "interpretation": "Use the authors' documented benchmark conventions to close the data stage. Preserve the approved wealth correction and disclose reconstruction differences; do not require a bespoke historical claim-valuation model.",
+  "reference_commit": "13d836b5187cbfa69730dd256d8eb767e65ca21f",
+  "source_vintage": "Fresh WRDS and official JKP source captures, September 10\u201311, 2026, through December 2025",
+  "bespoke_carried_claim_policy_adopted": false,
+  "source_rules": {
+    "features": "Supplied 115 JKP features; 57 observed minimum; monthly empirical CDF before final validity; exact raw zeros remain zero; missing ranks become 0.5",
+    "eligibility": "Released NYSE, return-availability, dollar-volume, SIC, lookback, upper-half/minimum-50 and 12-row addition/deletion rules",
+    "missing_future_returns": "Complete per-security first-to-last observed monthly grid; drop rows with all twelve future returns missing; replace individual missing excess leads by zero",
+    "terminal_G_M": "Retain the JKP supplied delayed-value and missing-delisting conventions as benchmark assumptions",
+    "exits": "Source propagates holdings only for IDs in the next eligible weight vector; omitted IDs have no separate liquidation-trade entry; every such transition is inventoried for Step 4",
+    "market": "Use the official published JKP USA value-weighted excess market directly, as the authors use a supplied market file",
+    "risk_scaling": "Portfolio-ML uses the square root of covariance diagonals and the source cross-sectional median fallback for unavailable lagged scales; raw rvol_m is not the core normalization input"
+  },
+  "reconstruction_differences": {
+    "wealth": "Approved reciprocal compounding; exact USD 10 billion at December 31, 2020",
+    "included_delisting_values": "R1 uses CIZ monthly excess returns for A/P/V when observed, avoiding a second application of included event values; R0 supplied returns remain separately available",
+    "stock_total_returns": "R1 adds the actual outcome-month CRSP bill subtraction rate; original decision-month French-RF totals remain explicitly named R0 columns",
+    "daily_returns": "CIZ observed daily total returns less monthly CRSP 30-day bill return divided by 21; retained raw missing daily returns are omitted from regressions as in the source",
+    "features": "Retain vendor features as supplied, including documented upstream issues; do not insert the separately rebuilt raw-volatility diagnostics into predictors",
+    "end_date": "Fresh continuation through December 2025 for the already approved exposed-robustness period; last supported decision November 2025"
+  },
+  "acceptance_scope": "A reproducible data package for Step 4 validation of the named historical paper benchmark reconstruction",
+  "limitations": [
+    "The current vendor vintage is not established to equal the authors' original input vintage. Exact published-statistic replication is not claimed.",
+    "The source uses future-return availability when selecting observations. Historical comparisons using this universe are conditional paper benchmarks, not certified causal executable investment records.",
+    "Zero excess returns, delayed-value attribution, missing-delisting assumptions and disappearance from the next weight vector are benchmark conventions, not verified cash receipts or realistic liquidation prices and costs.",
+    "Published features retain documented upstream return-filter and return-construction issues. Fixing included delisting values in outcome columns does not rebuild every affected predictor.",
+    "The separate constituent reconstruction retains a maximum 0.2890477361 basis-point discrepancy from the official market file. The benchmark input is the publisher file; constituent equality is not claimed.",
+    "CIZ daily observations are a current reconstruction input with documented precision differences from legacy daily exports.",
+    "Imputed forward cells at the December 2025 boundary do not make twelve-month or thirty-six-month extension labels mature. Later steps must enforce actual outcome calendars.",
+    "No portfolio backtest, covariance-engine acceptance, live execution readiness or prospective data lock is certified by Step 3."
+  ],
+  "supersedes": "The proposed additional carried-claim valuation policy and the requirement to reproduce the publisher market from every constituent before accepting a supplied-market benchmark",
+  "numerical_protocol_parameters_changed": false,
+  "protected_scientific_files": [
+    "config/protocol_v1.json",
+    "config/reconstruction_amendment.json",
+    "docs/RECONSTRUCTION_AMENDMENT.md",
+    "docs/STEP_1_THEORY.md",
+    "GOAL.md"
+  ]
+}

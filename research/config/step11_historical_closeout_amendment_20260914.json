@@ -1,0 +1,41 @@
+{
+  "amendment_id": "step11-historical-closeout-20260914",
+  "status": "USER_AUTHORIZED_SCOPE_AMENDMENT",
+  "recorded_at_utc": "2026-09-14T13:00:34.771529+00:00",
+  "base_protocol": "config/protocol_v1.json",
+  "base_protocol_sha256": "32c08fa7b1edf20b03546f320c625938438c18017154578cc052b00d93c91230",
+  "scope": "Replace Step 11 in the current deliverable with historical close-out through available December 2025 outcomes; defer the originally prescribed prospective study.",
+  "return_period": [
+    "2021-01-31",
+    "2025-12-31"
+  ],
+  "months": 60,
+  "start_basis": "First return month after the unchanged main study ending December 2020",
+  "end_basis": "Latest complete accepted outcome month; also confirmed for the existing CRSP monthly/bill source route",
+  "evidence_role": "Previously exposed historical robustness; already computed and inferred in Steps 9\u201310",
+  "comparisons": "All seven frozen methods in each of the three pre-existing variants; C*=R1 retained",
+  "execution": "Verify and synthesize accepted paths and intervals; do not rerun portfolio fitting, resampling or selection",
+  "unchanged": [
+    "Main baseline study 1981\u20132020",
+    "Selection 2001\u20132010 and primary extension evaluation 2011\u20132020",
+    "Historical numerical settings and data/accounting conventions",
+    "Frozen comparator choices, seeds, parameter budgets and prior accepted files",
+    "Original historical no-demonstrated-benefit conclusion unless verified evidence contradicts it"
+  ],
+  "claims_prohibited": [
+    "Prospective or untouched holdout evidence",
+    "Independent replication from reused rows",
+    "Causal/live execution certification",
+    "Sixty months as 24 new prospective observations",
+    "Completion of the original 24-month future study"
+  ],
+  "original_prospective_study": {
+    "status": "DEFERRED_OUTSIDE_CURRENT_COMPLETION",
+    "months": 24,
+    "operational_review_month": 12,
+    "started": false,
+    "complete": false,
+    "lock": null
+  },
+  "scientific_files_policy": "Additive scope amendment; preserve the five originally protected files and all prior receipts byte-for-byte."
+}

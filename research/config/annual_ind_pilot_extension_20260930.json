@@ -1,0 +1,18 @@
+{
+  "at_utc": "2026-09-30T14:51:28.896703+00:00",
+  "scope": "Verify read-only cached input reuse and continue the full-window fitting pilot; no full historical launch",
+  "additional_compute_seconds": 14400.0,
+  "prior_charged_seconds": 7200.493186585812,
+  "cumulative_engineering_cap_seconds": 21600.493186585813,
+  "max_physical_footprint_gib": 16.0,
+  "min_system_headroom_gib": 4.0,
+  "max_additional_disk_gib": 2.0,
+  "min_free_disk_gib": 50.0,
+  "native_pressure": "NORMAL",
+  "allow_swap_growth": false,
+  "workers": 8,
+  "blas_threads": 1,
+  "scientific_settings_changed": false,
+  "full_historical_run_authorized": false,
+  "AI_monitoring": false
+}

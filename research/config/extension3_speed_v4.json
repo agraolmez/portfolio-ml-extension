@@ -1,0 +1,42 @@
+{
+  "id": "extension3-computation-limit-v4-20260919",
+  "execution": {
+    "workers": 4,
+    "trig_backend": "accelerate",
+    "blas_threads_per_worker": 1,
+    "native_thread_control": "BLASSetThreading(SINGLE_THREADED) on each thread",
+    "aggregation": "original chronological month and slice order",
+    "neutral_features": "original NumPy transformation",
+    "arithmetic": "float64; original economic equations and conditional coefficient solve",
+    "parallel_integrity_checks": true,
+    "rank_one_adjoint": true,
+    "shared_horner": true,
+    "packed_horner": false,
+    "neutral_operators": "original independent Horner recursions",
+    "additional_persistent_cache_bytes": 0,
+    "fused_feature_arrays": true,
+    "fused_adjoint_arrays": true,
+    "native_arithmetic": "IEEE binary64; fast math disabled; FMA contraction disabled",
+    "neutral_native_kernels": false,
+    "compact_evaluation_reuse_maximum_bytes": 8589934592,
+    "intermediate_reuse_lifetime": "one objective and gradient call; never across parameters",
+    "intermediate_reuse_headroom_bytes": 4294967296,
+    "intermediate_reuse_process_admission_ceiling_bytes": 21474836480,
+    "source_panel_memory_maximum_bytes": 3221225472,
+    "source_panels_released_after_preparation_pass": true,
+    "batched_accepted_file_checks": true,
+    "deferred_overflow_loading": true,
+    "vectorized_calendar_reference": true,
+    "overflow_workers_share_numerical_pool": true
+  },
+  "verification": {
+    "absolute_tolerance": 1e-11,
+    "relative_tolerance": 1e-10,
+    "conditional_solve_residual": 1e-09,
+    "pilot_stationarity_tolerance": 1e-05
+  },
+  "scientific_settings_changed": false,
+  "resource_limits_changed": false,
+  "previous_source_files_modified": false,
+  "full_run_requires_separate_approval": true
+}

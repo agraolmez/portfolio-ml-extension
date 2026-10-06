@@ -1,0 +1,14 @@
+REBUILD THE MANUSCRIPT PDFS
+
+The .tex files are standalone. Their equations, exhibits and references are embedded; no bibliography database or external figure files are required. Use XeLaTeX or Tectonic, because these sources use fontspec. pdfLaTeX is not supported.
+
+For example, from the extracted source folder:
+
+xelatex paper.tex
+xelatex paper.tex
+xelatex supplemental_material.tex
+xelatex supplemental_material.tex
+
+Run from anonymous/ instead to compile paper_anonymous.tex and supplemental_material_anonymous.tex. Repeating the build resolves cross-references. Alternatively, use tectonic paper.tex and tectonic supplemental_material.tex.
+
+The submitted PDFs were built with Times New Roman. Install that font under its applicable terms to reproduce the same typography. The source has a Times-compatible fallback for environments where that font is unavailable, which may alter page breaks. Supplied PDFs are the verified layout; recompilation with other fonts requires a fresh layout check. No font binaries or TeX environment are redistributed.

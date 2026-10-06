@@ -1,0 +1,21 @@
+{
+  "id": "extension3-computation-optimization-v1-20260919",
+  "execution": {
+    "workers": 4,
+    "trig_backend": "accelerate",
+    "blas_threads_per_worker": 1,
+    "native_thread_control": "BLASSetThreading(SINGLE_THREADED) on each thread",
+    "aggregation": "original chronological month and slice order",
+    "neutral_features": "original NumPy transformation",
+    "arithmetic": "float64; original economic equations and conditional coefficient solve"
+  },
+  "verification": {
+    "absolute_tolerance": 1e-11,
+    "relative_tolerance": 1e-10,
+    "conditional_solve_residual": 1e-09,
+    "pilot_stationarity_tolerance": 1e-05
+  },
+  "scientific_settings_changed": false,
+  "previous_source_files_modified": false,
+  "full_run_requires_separate_approval": true
+}

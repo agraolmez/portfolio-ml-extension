@@ -1,0 +1,68 @@
+{
+  "id": "annual_ind_staged_20261001",
+  "status": "APPROVED_IMPLEMENTING",
+  "approved_plan": "docs/ANNUAL_IND_STAGED_PROTOCOL_20261001.md",
+  "approved_plan_sha256": "e487100faa670cd8775c828d197c1069e1a26ed2be54b10079623351e29a3b4b",
+  "seed": 1,
+  "fit_years": [
+    1971,
+    2025
+  ],
+  "validation_first_return": "1971-01-31",
+  "training_first_decision": "1965-11-30",
+  "startup_validation_returns": [
+    "1966-01-31",
+    "1970-12-31"
+  ],
+  "primary_returns": [
+    "1981-01-31",
+    "2020-12-31"
+  ],
+  "extension_returns": [
+    "2020-01-31",
+    "2025-12-31"
+  ],
+  "nonoverlapping_extension_returns": [
+    "2021-01-31",
+    "2025-12-31"
+  ],
+  "extension_is_previously_exposed": true,
+  "annual_training_expands": true,
+  "rhos": [
+    0.1,
+    0.01,
+    0.001
+  ],
+  "multipliers": [
+    100.0,
+    10.0,
+    1.0
+  ],
+  "tie_order": "stronger temporal then stronger conditional; exact ties",
+  "baseline_parent_rule": "preceding December original full-grid choice; preliminary past-only original-grid validation for 1971",
+  "validation_criterion": "released author economic objective excluding fitting penalties",
+  "geometry_settings": "config/feature_geometry_study_v1.json",
+  "temporal_optimizer": "config/extension3_study_v3_proposed.json",
+  "conditional_state": "config/extension4_study_v1_proposed.json",
+  "inference": "config/manuscript_inference_20260929.json",
+  "paths": [
+    "B1",
+    "C4",
+    "IND"
+  ],
+  "returns_months": 540,
+  "compute_budget": {
+    "total_active_seconds": 172800,
+    "pilot_active_seconds": 172800,
+    "max_physical_footprint_gib": 28.0,
+    "min_system_headroom_gib": 1.0,
+    "max_additional_disk_gib": 20.0,
+    "min_free_disk_gib": 50.0
+  },
+  "workers": 12,
+  "blas_threads": 1,
+  "operator_cache_bytes": 5368709120,
+  "input_cache_bytes": 15032385536,
+  "calendar_source_bytes": 268435456,
+  "prior_charges_preserved_separately": true
+}

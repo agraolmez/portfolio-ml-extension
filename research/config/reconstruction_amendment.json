@@ -1,0 +1,32 @@
+{
+  "amendment_id": "wealth-accounting-20260906",
+  "status": "USER_APPROVED",
+  "decision_effect": "Apply reciprocal backward compounding to the documented reconstruction using audited market total returns. Preserve the original author code and USD 10 billion December 2020 anchor, document the discrepancy, and retain all independent historical evidence gates. This supersedes the earlier adviser-first requirement.",
+  "adviser_contact_authorized": false,
+  "basis": "Executed source audit: reverse (1-r) wealth path conflicts with forward (1+r) holdings-growth map",
+  "review_document": "docs/RECONSTRUCTION_AMENDMENT.md",
+  "proposal": "Preserve R0 diagnostics; use paper-consistent reciprocal compounding of audited market total returns for the named historical reconstruction, anchored at USD 10 billion on 2020-12-31",
+  "financial_execution_authorized_by_this_amendment": false,
+  "initial_protocol_decisions": "UNCHANGED_USER_CONFIRMED",
+  "decision_history": [
+    {
+      "date": "2026-09-06",
+      "status": "AWAITING_USER_ANSWER",
+      "event": "Source inconsistency documented and a reconstruction amendment proposed"
+    },
+    {
+      "date": "2026-09-07",
+      "status": "ADVISER_REVIEW_REQUIRED",
+      "event": "User chose adviser discussion before amendment adoption"
+    },
+    {
+      "date": "2026-09-07",
+      "recorded_at": "2026-09-07T15:09:54.932025+00:00",
+      "status": "USER_APPROVED",
+      "event": "After explanation of the source inconsistency, user explicitly approved applying the documented correction and asked that it be noted. This supersedes the earlier adviser-first choice; no adviser contact is authorized."
+    }
+  ],
+  "wealth_correction_authorized": true,
+  "adviser_review_required_before_correction": false,
+  "approved_wealth_convention": "reciprocal_compounding_audited_market_total_return"
+}
