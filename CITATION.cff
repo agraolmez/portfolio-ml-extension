@@ -1,9 +1,9 @@
 cff-version: 1.2.0
 message: "Please cite the accompanying research manuscript when using this code."
 type: software
-repository-code: "https://github.com/agraolmez/portfolio-ml"
-url: "https://github.com/agraolmez/portfolio-ml"
-title: "Portfolio-ML: Learned Representations and Industry Constraints in Implementable Portfolio Choice"
+repository-code: "https://github.com/agraolmez/portfolio-ml-extension"
+url: "https://github.com/agraolmez/portfolio-ml-extension"
+title: "Portfolio-ML Extension: Learned Representations and Industry Constraints in Implementable Portfolio Choice"
 authors:
   - family-names: "Olmez"
     given-names: "Agra Emir"

@@ -1,6 +1,6 @@
 {
   "files_sha256": {
-    "PROVENANCE.json": "ba79a63ae9c47c1cb8222df5ca4e6d3ab20fd83394fdeddc3db58fba55999760",
+    "PROVENANCE.json": "d612e5888ed4b0fea78b4818d5a106850e4c30015db786fecd1a1110692beb38",
     "README.md": "63adc4822e842714e11c677e5ef7533d2212d64870807146ca83c011a6dd1885",
     "data/component_controls.csv": "f5bccf2e532d4219d4ef9e62e5010344b09c4db677685cd73e3e4202816f130f",
     "data/monthly_strategy_returns.csv": "1b1eaa8c5e527dcaa57f2fc2fadefa0068205fc4d5753d57f17dfe3fd2d396ef",

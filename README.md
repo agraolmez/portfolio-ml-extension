@@ -1,6 +1,6 @@
-# Portfolio-ML: learned representations and industry constraints
+# Portfolio-ML Extension: learned representations and industry constraints
 
-[![Verification](https://github.com/agraolmez/portfolio-ml/actions/workflows/verify.yml/badge.svg)](https://github.com/agraolmez/portfolio-ml/actions/workflows/verify.yml)
+[![Verification](https://github.com/agraolmez/portfolio-ml-extension/actions/workflows/verify.yml/badge.svg)](https://github.com/agraolmez/portfolio-ml-extension/actions/workflows/verify.yml)
 
 Code and aggregate replication materials for **Learned Representations and Industry Constraints in Implementable Portfolio Choice**, by Agra Emir Olmez, Columbia Business School.
 
@@ -30,7 +30,7 @@ python tools/run_portable_tests.py
 
 The selected synthetic suite targets Linux and macOS. The aggregate verifier is independent of the historical training implementation and uses only the bundled monthly strategy returns. It reproduces six performance rows, two utility comparisons, the reported dependence sensitivities, and the arithmetic of 19 historical component summaries. Successful execution prints `PASS`. Use a new output directory on subsequent runs; existing results are never overwritten.
 
-The portable tests exercise numerical invariants on synthetic inputs. They do not require vendor data or train portfolios. See [validation scope](docs/VALIDATION.md). The [GitHub workflow](https://github.com/agraolmez/portfolio-ml/actions/workflows/verify.yml) runs these checks on a clean checkout; its badge above shows the current status.
+The portable tests exercise numerical invariants on synthetic inputs. They do not require vendor data or train portfolios. See [validation scope](docs/VALIDATION.md). The [GitHub workflow](https://github.com/agraolmez/portfolio-ml-extension/actions/workflows/verify.yml) runs these checks on a clean checkout; its badge above shows the current status.
 
 ## Repository map
 
@@ -53,4 +53,4 @@ The paper's reporting windows are 1981–2020 and 2021–2025. Some preserved hi
 
 ## Citation and rights
 
-Use [CITATION.cff](CITATION.cff) for the manuscript citation; this release does not claim a journal acceptance or DOI. [RIGHTS.md](RIGHTS.md) describes the rights applying to this release. The public repository is [agraolmez/portfolio-ml](https://github.com/agraolmez/portfolio-ml). See [maintainer instructions](docs/GITHUB_UPLOAD.md) for updating this curated release. Contact: aolmez28@gsb.columbia.edu.
+Use [CITATION.cff](CITATION.cff) for the manuscript citation; this release does not claim a journal acceptance or DOI. [RIGHTS.md](RIGHTS.md) describes the rights applying to this release. The public repository is [agraolmez/portfolio-ml](https://github.com/agraolmez/portfolio-ml-extension). See [maintainer instructions](docs/GITHUB_UPLOAD.md) for updating this curated release. Contact: aolmez28@gsb.columbia.edu.
