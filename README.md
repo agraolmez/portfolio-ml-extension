@@ -53,4 +53,4 @@ The paper's reporting windows are 1981–2020 and 2021–2025. Some preserved hi
 
 ## Citation and rights
 
-Use [CITATION.cff](CITATION.cff) for the manuscript citation; this release does not claim a journal acceptance or DOI. [RIGHTS.md](RIGHTS.md) describes the rights applying to this release. The public repository is [agraolmez/portfolio-ml](https://github.com/agraolmez/portfolio-ml-extension). See [maintainer instructions](docs/GITHUB_UPLOAD.md) for updating this curated release. Contact: aolmez28@gsb.columbia.edu.
+Use [CITATION.cff](CITATION.cff) for the manuscript citation; this release does not claim a journal acceptance or DOI. [RIGHTS.md](RIGHTS.md) describes the rights applying to this release. The public repository is [agraolmez/portfolio-ml-extension](https://github.com/agraolmez/portfolio-ml-extension). See [maintainer instructions](docs/GITHUB_UPLOAD.md) for updating this curated release. Contact: aolmez28@gsb.columbia.edu.

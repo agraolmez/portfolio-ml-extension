@@ -1,6 +1,6 @@
 # Maintaining the public repository
 
-The repository is [agraolmez/portfolio-ml](https://github.com/agraolmez/portfolio-ml-extension). Work in this curated checkout; the private study checkout retains other research artifacts and has a separate history.
+The repository is [agraolmez/portfolio-ml-extension](https://github.com/agraolmez/portfolio-ml-extension). Work in this curated checkout; the private study checkout retains other research artifacts and has a separate history.
 
 ```sh
 git clone https://github.com/agraolmez/portfolio-ml-extension.git
